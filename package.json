@@ -3,10 +3,10 @@
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "vite dev",
-		"build": "npm run package",
+		"build": "yarn lint && yarn package",
 		"preview": "vite preview",
 		"package": "svelte-kit sync && svelte-package && publint",
-		"prepublishOnly": "npm run package",
+		"prepublishOnly": "yarn package",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"test": "vitest",
@@ -27,11 +27,19 @@
 	"peerDependencies": {
 		"svelte": "^4.0.0"
 	},
+	"dependencies": {
+		"@isaacs/ttlcache": "^1.4.1",
+		"node-cache": "^5.1.2",
+		"uid-safe": "^2.1.5"
+	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/package": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@types/cookie": "^0.6.0",
+		"@types/node": "^20.10.5",
+		"@types/uid-safe": "^2.1.5",
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
 		"eslint": "^8.28.0",
