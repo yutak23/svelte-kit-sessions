@@ -1,0 +1,26 @@
+{
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true
+	},
+	"editor.renderWhitespace": "all",
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	// .prettierrc.jsonにplugin prettier-plugin-svelte の設定があるのであれば以下は不要
+	// "[svelte]": {
+	// 	"editor.defaultFormatter": "svelte.svelte-vscode"
+	// },
+	// https://github.com/microsoft/vscode-eslint/blob/main/README.md#settings-options
+	// .svelteをVS CodeのESLint拡張機能が認識するように設定を上書き
+	"eslint.probe": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"html",
+		"vue",
+		"markdown",
+		"svelte"
+	],
+	"eslint.validate": ["javascript", "javascriptreact", "svelte"]
+}
