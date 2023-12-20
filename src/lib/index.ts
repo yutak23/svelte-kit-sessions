@@ -1,6 +1,7 @@
 import type { Handle } from '@sveltejs/kit';
 import type { CookieSerializeOptions } from 'cookie';
 import Session from './session.js';
+import MemoryStore from './memory-store.js';
 
 declare global {
 	// eslint-disable-next-line @typescript-eslint/no-namespace
@@ -32,9 +33,10 @@ export interface SveltekitSessionConfig {
 	cookie?: CookieSerializeOptions;
 
 	/**
-	 * The session store instance, defaults to a new `MemoryStore` instance.
+	 * The session store instance.
+	 * You can use the `MemoryStore` or a custom store.
 	 */
-	store?: Store;
+	store: Store;
 
 	/**
 	 * This is the secret used to sign the session cookie. This can be either a string for a single secret.
@@ -96,4 +98,4 @@ const sveltekitSessionHandle =
 		return response;
 	};
 
-export { sveltekitSessionHandle };
+export { sveltekitSessionHandle, MemoryStore };

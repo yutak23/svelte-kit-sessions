@@ -8,8 +8,7 @@ describe('MemoryStore', () => {
 	beforeEach(() => {
 		memoryStore = new MemoryStore({
 			prefix: 'test:',
-			serializer: JSON,
-			ttl: 86400
+			serializer: JSON
 		});
 	});
 

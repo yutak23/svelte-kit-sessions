@@ -2,7 +2,6 @@ import type { RequestEvent } from '@sveltejs/kit';
 import { sync } from 'uid-safe';
 import type { CookieSerializeOptions } from 'cookie';
 import type { SessionData, Store, SveltekitSessionConfig } from './index.js';
-import MemoryStore from './memory-store.js';
 import { sign, unsign } from './cookie-signature.js';
 
 /**
@@ -24,7 +23,7 @@ export default class Session {
 		this.#id = generateSessionId();
 		this.#cookieName = options?.name || 'connect.sid';
 		this.#cookieOptions = { ...defaults(event.url), ...options?.cookie };
-		this.#store = options.store ? options.store : new MemoryStore();
+		this.#store = options.store;
 	}
 
 	static async initialize(event: RequestEvent, options: SveltekitSessionConfig): Promise<Session> {
