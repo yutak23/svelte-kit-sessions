@@ -1,9 +1,9 @@
 import TTLCache from '@isaacs/ttlcache';
-import type { Store, SessionData } from './index.js';
+import type { Store, SessionStoreData } from './index.js';
 
 interface Serializer {
-	parse(s: string): SessionData | Promise<SessionData>;
-	stringify(data: SessionData): string;
+	parse(s: string): SessionStoreData | Promise<SessionStoreData>;
+	stringify(data: SessionStoreData): string;
 }
 
 interface MemoryStoreOptions {
@@ -24,21 +24,21 @@ export default class MemoryStore implements Store {
 	constructor(options?: MemoryStoreOptions) {
 		this.#prefix = options?.prefix || '';
 		this.#serializer = options?.serializer || JSON;
-		this.#ttl = options?.ttl || 86400; // One day in seconds.;
+		this.#ttl = options?.ttl || Infinity;
 	}
 
-	async get(id: string): Promise<SessionData | null> {
+	async get(id: string): Promise<SessionStoreData | null> {
 		const key = this.#prefix + id;
-		const data = this.#sessions.get(key) as string;
-		return data ? this.#serializer.parse(data) : null;
+		const storeData = this.#sessions.get(key) as string;
+		return storeData ? this.#serializer.parse(storeData) : null;
 	}
 
-	async set(id: string, data: SessionData): Promise<void> {
+	async set(id: string, storeData: SessionStoreData): Promise<void> {
 		const key = this.#prefix + id;
-		const serialized = this.#serializer.stringify(data);
+		const serialized = this.#serializer.stringify(storeData);
 
-		if (data.cookie && data.cookie.expires) {
-			const ms = Number(new Date(data.cookie?.expires)) - Date.now();
+		if (storeData.cookieOptions && storeData.cookieOptions.expires) {
+			const ms = Number(new Date(storeData.cookieOptions.expires)) - Date.now();
 			const ttl = Math.ceil(ms / 1000);
 			this.#sessions.set(key, serialized, { ttl });
 			return;

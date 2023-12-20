@@ -1,6 +1,5 @@
 import type { Handle } from '@sveltejs/kit';
 import type { CookieSerializeOptions } from 'cookie';
-import type Cookie from './cookie.js';
 import Session from './session.js';
 
 declare global {
@@ -8,7 +7,7 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			session: Session & Partial<SessionData>;
+			session: Session;
 		}
 		// interface PageData {}
 		// interface PageState {}
@@ -25,7 +24,7 @@ export interface SveltekitSessionConfig {
 	 *   then you need to separate the session cookies from each other.
 	 * The simplest method is to simply set different names per app.
 	 */
-	name?: string | undefined;
+	name?: string;
 
 	/**
 	 * Settings object for the session ID cookie.
@@ -55,6 +54,11 @@ export interface SveltekitSessionConfig {
 	 */
 	secret: string;
 
+	/**
+	 * Forces a session that is "uninitialized" to be saved to the store. A session is uninitialized when it is new but not modified.
+	 * Choosing `false` is useful for implementing login sessions, reducing server storage usage, or complying with laws that require permission before setting a cookie.
+	 * Choosing `false` will also help with race conditions where a client makes multiple parallel requests without a session.
+	 */
 	saveUninitialized?: boolean;
 }
 
@@ -68,13 +72,17 @@ export interface SveltekitSessionConfig {
  *     }
  * }
  */
-export interface SessionData {
-	cookie: Cookie;
+export interface SessionData {}
+
+export interface SessionStoreData {
+	// https://github.com/sveltejs/kit/blob/%40sveltejs/kit%402.0.3/packages/kit/src/runtime/server/page/types.d.ts#L35
+	cookieOptions: CookieSerializeOptions & { path: string };
+	data: SessionData;
 }
 
 export interface Store {
-	get(id: string): Promise<SessionData | null>;
-	set(id: string, data: SessionData): Promise<void>;
+	get(id: string): Promise<SessionStoreData | null>;
+	set(id: string, data: SessionStoreData): Promise<void>;
 	destroy(id: string): Promise<void>;
 }
 

@@ -1,11 +1,6 @@
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import MemoryStore from '../../src/lib/memory-store.js';
-import type { SessionData } from '../../src/lib/index.js';
-import Cookie from '../../src/lib/cookie.js';
-
-interface TestSessionData extends SessionData {
-	user: string;
-}
+import type { SessionStoreData } from '../../src/lib/index.js';
 
 describe('MemoryStore', () => {
 	let memoryStore: MemoryStore;
@@ -29,7 +24,7 @@ describe('MemoryStore', () => {
 
 	it('should get session data', async () => {
 		const id = 'session1';
-		const data: TestSessionData = { user: 'john.doe', cookie: new Cookie() };
+		const data: SessionStoreData = { data: { user: 'john.doe' }, cookieOptions: { path: '/' } };
 
 		await memoryStore.set(id, data);
 		const result = await memoryStore.get(id);
@@ -47,7 +42,7 @@ describe('MemoryStore', () => {
 
 	it('should set session data', async () => {
 		const id = 'session2';
-		const data: TestSessionData = { user: 'john.doe', cookie: new Cookie() };
+		const data: SessionStoreData = { data: { user: 'john.doe' }, cookieOptions: { path: '/' } };
 
 		await memoryStore.set(id, data);
 		const result = await memoryStore.get(id);
@@ -57,7 +52,7 @@ describe('MemoryStore', () => {
 
 	it('should destroy session', async () => {
 		const id = 'session3';
-		const data: TestSessionData = { user: 'john.doe', cookie: new Cookie() };
+		const data: SessionStoreData = { data: { user: 'john.doe' }, cookieOptions: { path: '/' } };
 
 		await memoryStore.set(id, data);
 		await memoryStore.destroy(id);
