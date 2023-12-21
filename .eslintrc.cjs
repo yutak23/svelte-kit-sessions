@@ -20,9 +20,19 @@ module.exports = {
 	parserOptions: {
 		sourceType: 'module',
 		ecmaVersion: 2020,
+		extraFileExtensions: ['.svelte'],
 		project: './tsconfig.eslint.json'
 	},
 	rules: {
 		'import/no-extraneous-dependencies': 'warn'
-	}
+	},
+	overrides: [
+		{
+			files: ['*.svelte'],
+			parser: 'svelte-eslint-parser',
+			parserOptions: {
+				parser: '@typescript-eslint/parser'
+			}
+		}
+	]
 };
