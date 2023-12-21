@@ -33,10 +33,9 @@ export interface SveltekitSessionConfig {
 	cookie?: CookieSerializeOptions;
 
 	/**
-	 * The session store instance.
-	 * You can use the `MemoryStore` or a custom store.
+	 * The session store instance, defaults to a new `MemoryStore` instance.
 	 */
-	store: Store;
+	store?: Store;
 
 	/**
 	 * This is the secret used to sign the session cookie. This can be either a string for a single secret.
@@ -88,12 +87,16 @@ export interface Store {
 	destroy(id: string): Promise<void>;
 }
 
+const memoryStore = new MemoryStore();
+
 const sveltekitSessionHandle =
 	(options: SveltekitSessionConfig): Handle =>
 	async ({ event, resolve }) => {
 		const { locals } = event;
-		console.log('sveltekitSession');
-		locals.session = await Session.initialize(event, options);
+		locals.session = await Session.initialize(
+			{ url: event.url, cookies: event.cookies },
+			{ store: memoryStore, ...options }
+		);
 		const response = await resolve(event);
 		return response;
 	};
