@@ -56,3 +56,11 @@ To publish your library to [npm](https://www.npmjs.com):
 ```bash
 npm publish
 ```
+
+## How to develpment and test
+
+### Attension
+
+This project uses [Playwright](https://playwright.dev/) for testing. Therefore, it must meet Playwright's [System requirements](https://playwright.dev/docs/intro#system-requirements).
+
+If you only have a Linux environment that does not meet the System requirements(e.g., RHEL), you can develop and test with [VS Code devcontainer](https://code.visualstudio.com/docs/devcontainers/containers).
