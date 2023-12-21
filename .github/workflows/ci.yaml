@@ -12,6 +12,12 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        config-pattern: ['hoge']
+    name: config-pattern_${{ matrix.config-pattern }}_test
+
     steps:
       - uses: actions/checkout@v3
 
@@ -33,3 +39,5 @@ jobs:
 
       - name: Test
         run: yarn test
+        env:
+          CONFIG_PATTERN: ${{ matrix.config-pattern }}

@@ -2,7 +2,7 @@ import type { PlaywrightTestConfig } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
 	webServer: {
-		command: 'yarn build && yarn preview',
+		command: `CONFIG_PATTERN=${process.env.CONFIG_PATTERN || 'default'} yarn build && yarn preview`,
 		port: 4173
 	},
 	testDir: 'tests',

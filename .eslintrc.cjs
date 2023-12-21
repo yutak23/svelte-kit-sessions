@@ -24,7 +24,8 @@ module.exports = {
 		project: './tsconfig.eslint.json'
 	},
 	rules: {
-		'import/no-extraneous-dependencies': 'warn'
+		'import/no-extraneous-dependencies': 'warn',
+		'import/extensions': 'off'
 	},
 	overrides: [
 		{
