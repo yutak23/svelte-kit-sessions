@@ -1,6 +1,7 @@
 import { json, type RequestEvent, type RequestHandler } from '@sveltejs/kit';
 import lodash from 'lodash';
 
+// eslint-disable-next-line @typescript-eslint/unbound-method
 const { isEqual } = lodash;
 
 // eslint-disable-next-line import/prefer-default-export
