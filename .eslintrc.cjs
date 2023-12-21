@@ -33,7 +33,8 @@ module.exports = {
 			parser: 'svelte-eslint-parser',
 			parserOptions: {
 				parser: '@typescript-eslint/parser'
-			}
+			},
+			rules: { 'import/prefer-default-export': 'off', 'import/no-mutable-exports': 'warn' }
 		}
 	]
 };

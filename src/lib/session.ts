@@ -68,7 +68,7 @@ export default class Session {
 
 	#cookieOptions: CookieSerializeOptions & { path: string };
 
-	#data: SessionData = {};
+	#data: SessionData = {} as SessionData;
 
 	#sessionOptions: SveltekitSessionConfig & { store: Store };
 
@@ -76,6 +76,10 @@ export default class Session {
 
 	get id(): string {
 		return this.#id;
+	}
+
+	get cookieName(): string {
+		return this.#cookieName;
 	}
 
 	get cookieOptions(): CookieSerializeOptions & { path: string } {
