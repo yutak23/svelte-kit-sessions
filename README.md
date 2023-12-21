@@ -87,6 +87,10 @@ The code for the project to be developing is located in `src/lib`. Other files e
 
 ### Test
 
+ユニットテストとインテグレーションテストの2つがある。
+
+インテグレーションテストでは、`SveltekitSessionConfig`にあるオプションを網羅するようにテストを実装する。オプションの設定の切り替えは疑似的なDIで行う。また、実行されるテストについても、ファイル名で実行対象を決定するような設計になっている。
+
 ### Troubleshooting
 
 Please take the following actions according to the error.

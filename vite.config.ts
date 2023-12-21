@@ -5,7 +5,7 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	server: { host: '0.0.0.0' },
 	test: {
-		include: ['tests/**/*.{test,spec}.{js,ts}']
+		include: ['tests/lib/**/*.{test,spec}.{js,ts}']
 	},
 	define: {
 		'import.meta.configPattern': `'${process.env.CONFIG_PATTERN}'`
