@@ -26,5 +26,10 @@ jobs:
       - name: Lint
         run: yarn lint
 
+      - name: Set up integration test
+        run: |
+          yarn playwright install
+          yarn playwright install-deps
+
       - name: Test
         run: yarn test
