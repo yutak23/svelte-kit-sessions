@@ -1,4 +1,4 @@
-import { afterAll, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import MemoryStore from '../../src/lib/memory-store.js';
 import type { SessionStoreData } from '../../src/lib/index.js';
 
@@ -8,61 +8,103 @@ declare module '../../src/lib/index.js' {
 	}
 }
 
-describe('MemoryStore', () => {
-	let memoryStore: MemoryStore;
+const sleep = async (ms: number) =>
+	new Promise((resolve) => {
+		setTimeout(resolve, ms);
+	});
 
-	beforeEach(() => {
-		memoryStore = new MemoryStore({
-			prefix: 'test:',
-			serializer: JSON
+describe('MemoryStore', () => {
+	let memoryStore: MemoryStore | null;
+
+	afterEach(() => {
+		memoryStore = null;
+	});
+
+	describe('get', () => {
+		it('should get session data', async () => {
+			memoryStore = new MemoryStore();
+			const sid = 'sessionId';
+			const storeData: SessionStoreData = { data: { user: 'john.doe' }, cookie: { path: '/' } };
+
+			await memoryStore.set(sid, storeData, 10 * 1000);
+			const result = await memoryStore.get(sid);
+
+			expect(result).toEqual(storeData);
+		});
+
+		it('should get null, not exist', async () => {
+			memoryStore = new MemoryStore();
+			const sid = 'sessionId';
+
+			const result = await memoryStore.get(sid);
+
+			expect(result).toBeNull();
+		});
+
+		it('should get null, when ttl is reached', async () => {
+			memoryStore = new MemoryStore();
+			const sid = 'sessionId';
+			const storeData: SessionStoreData = { data: { user: 'john.doe' }, cookie: { path: '/' } };
+
+			await memoryStore.set(sid, storeData, 0.1 * 1000);
+			await sleep(150);
+			const result = await memoryStore.get(sid);
+
+			expect(result).toBeNull();
 		});
 	});
 
-	// Clean up any remaining sessions after each test
-	afterAll(async () => {
-		await Promise.all(
-			['session1', 'session2', 'session3', 'nonexistent'].map(async (id) => {
-				await memoryStore.destroy(id);
-			})
-		);
+	describe('set', () => {
+		it('should set session data', async () => {
+			memoryStore = new MemoryStore();
+			const sid = 'sessionId';
+			const storeData: SessionStoreData = { data: { user: 'john.doe' }, cookie: { path: '/' } };
+
+			await memoryStore.set(sid, storeData, 10 * 1000);
+			const result = await memoryStore.get(sid);
+
+			expect(result).toEqual(storeData);
+		});
+
+		it('should ttl is constructor ttl, when Infinity', async () => {
+			memoryStore = new MemoryStore({ ttl: 0.1 * 1000 });
+			const sid = 'sessionId';
+			const storeData: SessionStoreData = { data: { user: 'john.doe' }, cookie: { path: '/' } };
+
+			await memoryStore.set(sid, storeData, Infinity);
+			await sleep(150);
+			const result = await memoryStore.get(sid);
+
+			expect(result).toBeNull();
+		});
 	});
 
-	it('should get session data', async () => {
-		const id = 'session1';
-		const storeData: SessionStoreData = { data: { user: 'john.doe' }, cookie: { path: '/' } };
+	describe('destroy', () => {
+		it('should destroy session', async () => {
+			memoryStore = new MemoryStore();
+			const sid = 'sessionId';
+			const storeData: SessionStoreData = { data: { user: 'john.doe' }, cookie: { path: '/' } };
 
-		await memoryStore.set(id, storeData, Infinity);
-		const result = await memoryStore.get(id);
+			await memoryStore.set(sid, storeData, 10 * 1000);
+			await memoryStore.destroy(sid);
+			const result = await memoryStore.get(sid);
 
-		expect(result).toEqual(storeData);
+			expect(result).toBeNull();
+		});
 	});
 
-	it('should return null for non-existent session', async () => {
-		const id = 'nonexistent';
+	describe('touch', () => {
+		it('should ttl is extended', async () => {
+			memoryStore = new MemoryStore();
+			const sid = 'sessionId';
+			const storeData: SessionStoreData = { data: { user: 'john.doe' }, cookie: { path: '/' } };
 
-		const result = await memoryStore.get(id);
+			await memoryStore.set(sid, storeData, 0.5 * 1000);
+			await memoryStore.touch(sid, 10 * 1000);
+			await sleep(1000);
+			const result = await memoryStore.get(sid);
 
-		expect(result).toBeNull();
-	});
-
-	it('should set session data', async () => {
-		const id = 'session2';
-		const data: SessionStoreData = { data: { user: 'john.doe' }, cookie: { path: '/' } };
-
-		await memoryStore.set(id, data, Infinity);
-		const result = await memoryStore.get(id);
-
-		expect(result).toEqual(data);
-	});
-
-	it('should destroy session', async () => {
-		const id = 'session3';
-		const data: SessionStoreData = { data: { user: 'john.doe' }, cookie: { path: '/' } };
-
-		await memoryStore.set(id, data, Infinity);
-		await memoryStore.destroy(id);
-		const result = await memoryStore.get(id);
-
-		expect(result).toBeNull();
+			expect(result).toEqual(storeData);
+		});
 	});
 });

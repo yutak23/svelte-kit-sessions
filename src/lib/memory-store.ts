@@ -54,4 +54,9 @@ export default class MemoryStore implements Store {
 		const key = this.#prefix + id;
 		this.#sessions.delete(key);
 	}
+
+	async touch(id: string, ttl: number): Promise<void> {
+		const key = this.#prefix + id;
+		this.#sessions.setTTL(key, ttl);
+	}
 }
