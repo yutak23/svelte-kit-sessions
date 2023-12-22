@@ -12,6 +12,8 @@ interface MemoryStoreOptions {
 	ttl?: number;
 }
 
+const ONE_DAY_IN_SECONDS = 86400;
+
 export default class MemoryStore implements Store {
 	#sessions = new TTLCache();
 
@@ -19,12 +21,16 @@ export default class MemoryStore implements Store {
 
 	#serializer: Serializer;
 
+	/**
+	 * Time to live in milliseconds.
+	 * default: 86400 * 1000
+	 */
 	#ttl: number;
 
 	constructor(options?: MemoryStoreOptions) {
 		this.#prefix = options?.prefix || '';
 		this.#serializer = options?.serializer || JSON;
-		this.#ttl = options?.ttl || Infinity;
+		this.#ttl = options?.ttl || ONE_DAY_IN_SECONDS * 1000;
 	}
 
 	async get(id: string): Promise<SessionStoreData | null> {
@@ -33,17 +39,14 @@ export default class MemoryStore implements Store {
 		return storeData ? this.#serializer.parse(storeData) : null;
 	}
 
-	async set(id: string, storeData: SessionStoreData): Promise<void> {
+	async set(id: string, storeData: SessionStoreData, ttl: number): Promise<void> {
 		const key = this.#prefix + id;
 		const serialized = this.#serializer.stringify(storeData);
 
-		if (storeData.cookieOptions && storeData.cookieOptions.expires) {
-			const ms = Number(new Date(storeData.cookieOptions.expires)) - Date.now();
-			const ttl = Math.ceil(ms / 1000);
+		if (ttl !== Infinity) {
 			this.#sessions.set(key, serialized, { ttl });
 			return;
 		}
-
 		this.#sessions.set(key, serialized, { ttl: this.#ttl });
 	}
 

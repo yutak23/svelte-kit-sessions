@@ -89,8 +89,24 @@ export interface SessionStoreData {
 }
 
 export interface Store {
+	/**
+	 * Returns JSON data stored in the store
+	 * @param id The session ID
+	 */
 	get(id: string): Promise<SessionStoreData | null>;
-	set(id: string, data: SessionStoreData): Promise<void>;
+	/**
+	 * Stores JSON data in the store
+	 * @param id The session ID
+	 * @param storeData JSON data to store
+	 * @param ttl Time to live in milliseconds. This ttl is calculated with a priority of maxAge > expires,
+	 * which is useful for store implementation. If no maxAge and expires, ttl is *Infinity*.
+	 * But can also be calculated independently in the store by referring to the storeData.cookie.
+	 */
+	set(id: string, storeData: SessionStoreData, ttl: number): Promise<void>;
+	/**
+	 * Deletes a session from the store
+	 * @param id The session ID
+	 */
 	destroy(id: string): Promise<void>;
 }
 
