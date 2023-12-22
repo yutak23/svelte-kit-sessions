@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import crypto from 'crypto';
+import { DateTime } from 'luxon';
 import Session from '../../src/lib/session.js';
 import { sign } from '../../src/lib/cookie-signature.js';
 
@@ -220,6 +221,113 @@ describe('Session', () => {
 				expect(mockStore.touch).toBeCalledTimes(0);
 				expect(mockEvent.cookies.get).toBeCalledTimes(1);
 				expect(mockStore.get).toBeCalledTimes(0);
+			});
+		});
+
+		describe('getTtlMs', () => {
+			it('if both maxAge and expire are present, then maxAge', async () => {
+				const dt = DateTime.now().plus({ minutes: 30 });
+				const cookie = {
+					path: '/',
+					httpOnly: true,
+					sameSite: 'lax',
+					secure: false,
+					expires: dt.toJSDate(),
+					maxAge: 600
+				};
+				mockEvent.cookies.get.mockImplementation(() => undefined);
+
+				const session = await Session.initialize(mockEvent, {
+					secret: 'my-secret',
+					store: mockStore,
+					name: 'init-session',
+					saveUninitialized: true,
+					cookie: { expires: dt.toJSDate(), maxAge: 600 }
+				});
+
+				expect(session.id).toEqual(expect.any(String));
+				expect(session.cookie).toEqual(cookie);
+				expect(mockEvent.cookies.set).toBeCalledTimes(1);
+				expect(mockEvent.cookies.set).toBeCalledWith('init-session', expect.any(String), cookie);
+				expect(mockStore.set).toBeCalledTimes(1);
+				expect(mockStore.set).toBeCalledWith(session.id, { cookie, data: {} }, 600 * 1000);
+			});
+
+			it('if only set maxAge, then maxAge', async () => {
+				const cookie = {
+					path: '/',
+					httpOnly: true,
+					sameSite: 'lax',
+					secure: false,
+					maxAge: 600
+				};
+				mockEvent.cookies.get.mockImplementation(() => undefined);
+
+				const session = await Session.initialize(mockEvent, {
+					secret: 'my-secret',
+					store: mockStore,
+					name: 'init-session',
+					saveUninitialized: true,
+					cookie: { maxAge: 600 }
+				});
+
+				expect(session.id).toEqual(expect.any(String));
+				expect(session.cookie).toEqual(cookie);
+				expect(mockEvent.cookies.set).toBeCalledTimes(1);
+				expect(mockEvent.cookies.set).toBeCalledWith('init-session', expect.any(String), cookie);
+				expect(mockStore.set).toBeCalledTimes(1);
+				expect(mockStore.set).toBeCalledWith(session.id, { cookie, data: {} }, 600 * 1000);
+			});
+
+			it('if only set expire, then expire', async () => {
+				const dt = DateTime.now().plus({ minutes: 30 });
+				const cookie = {
+					path: '/',
+					httpOnly: true,
+					sameSite: 'lax',
+					secure: false,
+					expires: dt.toJSDate()
+				};
+				mockEvent.cookies.get.mockImplementation(() => undefined);
+
+				const session = await Session.initialize(mockEvent, {
+					secret: 'my-secret',
+					store: mockStore,
+					name: 'init-session',
+					saveUninitialized: true,
+					cookie: { expires: dt.toJSDate() }
+				});
+
+				expect(session.id).toEqual(expect.any(String));
+				expect(session.cookie).toEqual(cookie);
+				expect(mockEvent.cookies.set).toBeCalledTimes(1);
+				expect(mockEvent.cookies.set).toBeCalledWith('init-session', expect.any(String), cookie);
+				expect(mockStore.set).toBeCalledTimes(1);
+				expect(mockStore.set).toBeCalledWith(session.id, { cookie, data: {} }, 30 * 60 * 1000); // 30min * 60sec * 1000ms
+			});
+
+			it('if both maxAge and expire are not set, then Infinity', async () => {
+				const cookie = {
+					path: '/',
+					httpOnly: true,
+					sameSite: 'lax',
+					secure: false
+				};
+				mockEvent.cookies.get.mockImplementation(() => undefined);
+
+				const session = await Session.initialize(mockEvent, {
+					secret: 'my-secret',
+					store: mockStore,
+					name: 'init-session',
+					saveUninitialized: true
+				});
+
+				expect(session.id).toEqual(expect.any(String));
+				expect(session.cookie).toEqual(cookie);
+				expect(mockEvent.cookies.set).toBeCalledTimes(1);
+				expect(mockEvent.cookies.set).toBeCalledWith('init-session', expect.any(String), cookie);
+				expect(mockStore.set).toBeCalledTimes(1);
+				expect(mockStore.set).toBeCalledWith(session.id, { cookie, data: {} }, Infinity);
 			});
 		});
 	});
