@@ -75,9 +75,16 @@ export interface SveltekitSessionConfig {
  */
 export interface SessionData {}
 
-export interface SessionStoreData {
+/**
+ * stringify/parseable cookie data(CookieSerializeOptions without `encode`)
+ */
+export interface SessionCookieOptions extends Omit<CookieSerializeOptions, 'encode'> {
 	// https://github.com/sveltejs/kit/blob/%40sveltejs/kit%402.0.3/packages/kit/src/runtime/server/page/types.d.ts#L35
-	cookieOptions: CookieSerializeOptions & { path: string };
+	path: string;
+}
+
+export interface SessionStoreData {
+	cookie: SessionCookieOptions;
 	data: SessionData;
 }
 

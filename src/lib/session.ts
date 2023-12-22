@@ -1,14 +1,11 @@
 import type { RequestEvent } from '@sveltejs/kit';
 import { sync } from 'uid-safe';
 import type { CookieSerializeOptions } from 'cookie';
-import type { SessionData, Store, SveltekitSessionConfig } from './index.js';
+import type { SessionCookieOptions, SessionData, Store, SveltekitSessionConfig } from './index.js';
 import { sign, unsign } from './cookie-signature.js';
 
 interface SimpleRequestEvent extends Pick<RequestEvent, 'url' | 'cookies'> {}
 
-/**
- * Generate a session ID for a new session.
- */
 const generateSessionId = (): string => sync(24);
 
 // https://github.com/sveltejs/kit/blob/%40sveltejs/kit%402.0.3/packages/kit/src/runtime/server/cookie.js#L40
@@ -23,8 +20,8 @@ const defaults = (url: URL): CookieSerializeOptions & { path: string } => ({
 export default class Session {
 	constructor(event: SimpleRequestEvent, options: SveltekitSessionConfig & { store: Store }) {
 		this.#id = generateSessionId();
-		this.#cookieName = options?.name || 'connect.sid';
-		this.#cookieOptions = { ...defaults(event.url), ...options?.cookie };
+		this.#cookieName = options.name || 'connect.sid';
+		this.#cookieOptions = { ...defaults(event.url), ...options.cookie };
 		this.#sessionOptions = options;
 		this.#event = event;
 	}
@@ -42,7 +39,16 @@ export default class Session {
 			const sessionData = await session.#sessionOptions.store.get(unsignedSid);
 			if (sessionData) {
 				session.#id = unsignedSid;
-				session.#cookieOptions = sessionData.cookieOptions;
+				// Set encode in SveltekitSessionConfig.cookie(CookieSerializeOptions) because encode function cannot parse to JSON
+				session.#cookieOptions = {
+					...sessionData.cookie,
+					encode: (value: string): string => {
+						if (session.#sessionOptions.cookie?.encode)
+							return session.#sessionOptions.cookie?.encode(value);
+						// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/cookie/index.d.ts#L26
+						return encodeURIComponent(value);
+					}
+				};
 				session.#data = sessionData.data;
 				return session;
 			}
@@ -50,7 +56,7 @@ export default class Session {
 
 		if (options.saveUninitialized) {
 			await session.#sessionOptions.store.set(session.#id, {
-				cookieOptions: session.#cookieOptions,
+				cookie: session.#getParsableCookieOptions(),
 				data: session.#data
 			});
 			event.cookies.set(
@@ -94,6 +100,12 @@ export default class Session {
 		return this.#sessionOptions.store;
 	}
 
+	#getParsableCookieOptions(): SessionCookieOptions {
+		const cookieOptions = { ...this.#cookieOptions };
+		if (cookieOptions.encode) delete cookieOptions.encode;
+		return cookieOptions;
+	}
+
 	/**
 	 * Set data in the session.
 	 *
@@ -103,7 +115,7 @@ export default class Session {
 	async setData(data: SessionData): Promise<void> {
 		this.#data = data;
 		if (this.#sessionOptions.saveUninitialized)
-			await this.store.set(this.id, { cookieOptions: this.cookieOptions, data: this.#data });
+			await this.store.set(this.id, { cookie: this.#getParsableCookieOptions(), data: this.#data });
 	}
 
 	/**
@@ -111,7 +123,7 @@ export default class Session {
 	 */
 	async save(): Promise<void> {
 		await this.#sessionOptions.store.set(this.id, {
-			cookieOptions: this.cookieOptions,
+			cookie: this.#getParsableCookieOptions(),
 			data: this.#data
 		});
 		this.#event.cookies.set(
