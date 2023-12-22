@@ -21,9 +21,8 @@ const generateSessionId = (): string => sync(24);
 const getTtlMs = (cookie: CookieSerializeOptions): number => {
 	const { expires, maxAge } = cookie;
 
-	if (expires && maxAge) return maxAge * 1000;
-	if (expires) return Number(new Date(expires)) - Date.now();
 	if (maxAge) return maxAge * 1000;
+	if (expires) return Number(new Date(expires)) - Date.now();
 	return Infinity;
 };
 
@@ -52,39 +51,40 @@ export default class Session {
 	): Promise<Session> {
 		const session = new Session(event, options);
 
-		const sid = session.#event.cookies.get(session.#cookieName);
-		const unsignedSid = await unsign(sid || '', session.#sessionOptions.secret);
+		const { cookies } = session.#event;
+		const { secret, store, rolling, saveUninitialized } = session.#sessionOptions;
+
+		const sid = cookies.get(session.#cookieName);
+		const unsignedSid = await unsign(sid || '', secret);
 
 		if (unsignedSid) {
-			const sessionData = await session.#sessionOptions.store.get(unsignedSid);
+			const sessionData = await store.get(unsignedSid);
 			if (sessionData) {
 				session.#id = unsignedSid;
+				session.#cookie = { ...sessionData.cookie };
 				// Set encode in SveltekitSessionConfig.cookie(CookieSerializeOptions) because encode function cannot parse to JSON
-				session.#cookie = {
-					...sessionData.cookie,
-					encode: (value: string): string => {
-						if (options.cookie?.encode) return options.cookie?.encode(value);
-						// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/cookie/index.d.ts#L26
-						return encodeURIComponent(value);
-					}
-				};
+				if (options.cookie && options.cookie.encode)
+					session.#cookie.encode = (value: string) => options.cookie!.encode!(value);
 				session.#data = sessionData.data;
 				session.#storeTtlMs = getTtlMs(sessionData.cookie);
+
+				// update cookie maxAge and touch store ttl
+				if (session.#cookie.maxAge && rolling) {
+					await store.touch(session.#id, session.#cookie.maxAge);
+					cookies.set(session.#cookieName, await sign(session.#id, secret), session.#cookie);
+				}
+
 				return session;
 			}
 		}
 
-		if (options.saveUninitialized) {
-			await session.#sessionOptions.store.set(
+		if (saveUninitialized) {
+			await store.set(
 				session.#id,
 				{ cookie: session.#getParsableCookieOptions(), data: session.#data },
 				session.#storeTtlMs
 			);
-			session.#event.cookies.set(
-				session.#cookieName,
-				await sign(session.#id, session.#sessionOptions.secret),
-				session.#cookie
-			);
+			cookies.set(session.#cookieName, await sign(session.#id, secret), session.#cookie);
 		}
 		return session;
 	}

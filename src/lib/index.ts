@@ -33,6 +33,22 @@ export interface SveltekitSessionConfig {
 	cookie?: CookieSerializeOptions;
 
 	/**
+	 * Force the session identifier cookie to be set on every response. The expiration is reset to the original `maxAge`, resetting the expiration countdown.
+	 * The default value is `false`.
+	 * If `cookie.maxAge` is not set, this option is ignored.
+	 *
+	 * With this enabled, the session identifier cookie will expire in `maxAge` *since the last response was sent* instead of in `maxAge` *since the session was last modified by the server*.
+	 * This is typically used in conjuction with short, non-session-length `maxAge` values to provide a quick timeout of the session data
+	 *   with reduced potential of it occurring during on going server interactions.
+	 *
+	 * Note that when this option is set to `true` but the `saveUninitialized` option is set to `false`, the cookie will not be set on a response with an uninitialized session.
+	 * This option only modifies the behavior when an existing session was loaded for the request.
+	 *
+	 * @see saveUninitialized
+	 */
+	rolling?: boolean;
+
+	/**
 	 * The session store instance, defaults to a new `MemoryStore` instance.
 	 */
 	store?: Store;
@@ -108,6 +124,12 @@ export interface Store {
 	 * @param id The session ID
 	 */
 	destroy(id: string): Promise<void>;
+	/**
+	 * Update expiration with ttl
+	 * @param id The session ID
+	 * @param ttl Time to live in milliseconds.
+	 */
+	touch(id: string, ttl: number): Promise<void>;
 }
 
 const memoryStore = new MemoryStore();
