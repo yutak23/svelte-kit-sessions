@@ -43,6 +43,7 @@ export default class MemoryStore implements Store {
 		const key = this.#prefix + id;
 		const serialized = this.#serializer.stringify(storeData);
 
+		// Infinite time cache is not a cache, so the store side is always implemented to be volatile.
 		if (ttl !== Infinity) {
 			this.#sessions.set(key, serialized, { ttl });
 			return;

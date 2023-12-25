@@ -6,8 +6,16 @@ import { uidSync } from './uid-safe.js';
 
 interface SimpleRequestEvent extends Pick<RequestEvent, 'cookies'> {}
 
+/**
+ * Generate a session ID.
+ * @returns {string} session ID(base64 string)
+ */
 const generateSessionId = (): string => uidSync(24);
 
+/**
+ * Get default cookie options.
+ * @returns {CookieSerializeOptions & { path: string }} default cookie options
+ */
 const defaultCookieOptions = (): CookieSerializeOptions & { path: string } => ({
 	// https://github.com/expressjs/session/blob/v1.17.3/session/cookie.js#L26
 	path: '/'
@@ -34,6 +42,12 @@ const getTtlMs = (cookie: CookieSerializeOptions): number => {
 	return Infinity;
 };
 
+/**
+ * Parse session cookie options.
+ * @param {SveltekitSessionConfig} options session options
+ * @param {SessionCookieOptions} cookieOptions session cookie options
+ * @returns {CookieSerializeOptions & { path: string }} cookie options
+ */
 const parseSessionCookieOptions = (
 	options: SveltekitSessionConfig,
 	cookieOptions: SessionCookieOptions
