@@ -16,5 +16,7 @@ export const POST: RequestHandler = async (event: RequestEvent) => {
 
 	const { user_id: userId, name } = (await event.request.json()) as RequestBody;
 
-	return json({ is_equal: isEqual(session.data, { user_id: userId, name }) });
+	return userId && name
+		? json({ is_equal: isEqual(session.data, { user_id: userId, name }) })
+		: json({ is_equal: isEqual(session.data, {}) });
 };

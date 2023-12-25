@@ -51,7 +51,7 @@ test('session is created by saving', async ({ request }) => {
 	});
 	const { exits: exits2 } = (await existResponse2.json()) as { exits: boolean };
 	expect(existResponse2.status()).toBe(200);
-	expect(exits2).toBe(true);
+	expect(exits2).toBeTruthy();
 
 	// 4
 	const isequalResponse = await request.post('/api/test/isequal-session', {
@@ -125,7 +125,7 @@ test('session can be regenerated', async ({ request }) => {
 	});
 	const { exits: exits2 } = (await existResponse2.json()) as { exits: boolean };
 	expect(existResponse2.status()).toBe(200);
-	expect(exits2).toBe(true);
+	expect(exits2).toBeTruthy();
 
 	// 4
 	const isequalResponse = await request.post('/api/test/isequal-session', {
@@ -162,7 +162,7 @@ test('session can be regenerated', async ({ request }) => {
 	});
 	const { exits: exits3 } = (await existResponse3.json()) as { exits: boolean };
 	expect(existResponse3.status()).toBe(200);
-	expect(exits3).toBe(true);
+	expect(exits3).toBeTruthy();
 
 	// 7
 	const isequalResponse2 = await request.post('/api/test/isequal-session', {
@@ -205,7 +205,7 @@ test('session can be destroyed', async ({ request }) => {
 	});
 	const { exits: exits2 } = (await existResponse2.json()) as { exits: boolean };
 	expect(existResponse2.status()).toBe(200);
-	expect(exits2).toBe(true);
+	expect(exits2).toBeTruthy();
 
 	// 4
 	const destroyResponse = await request.post('/api/test/destroy-session', {

@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config-pattern: ['default']
+        config-pattern: ['default', 'saveUninitialized', 'rolling']
     name: config-pattern_${{ matrix.config-pattern }}_test
 
     steps:
