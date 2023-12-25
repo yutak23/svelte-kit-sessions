@@ -1,12 +1,12 @@
 import type { RequestEvent } from '@sveltejs/kit';
-import { sync } from 'uid-safe';
 import type { CookieSerializeOptions } from 'cookie';
 import type { SessionCookieOptions, SessionData, Store, SveltekitSessionConfig } from './index.js';
 import { sign, unsign } from './cookie-signature.js';
+import { uidSync } from './uid-safe.js';
 
 interface SimpleRequestEvent extends Pick<RequestEvent, 'url' | 'cookies'> {}
 
-const generateSessionId = (): string => sync(24);
+const generateSessionId = (): string => uidSync(24);
 
 /**
  * Get the TTL in milliseconds for the given cookie options.

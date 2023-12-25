@@ -30,12 +30,15 @@
 		"svelte": "^4.0.0"
 	},
 	"dependencies": {
-		"@isaacs/ttlcache": "^1.4.1",
-		"uid-safe": "^2.1.5"
+		"@isaacs/ttlcache": "^1.4.1"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.40.1",
 		"@sveltejs/adapter-auto": "^3.0.0",
+		"@sveltejs/adapter-cloudflare": "^3.0.1",
+		"@sveltejs/adapter-netlify": "^3.0.1",
+		"@sveltejs/adapter-node": "^2.0.2",
+		"@sveltejs/adapter-vercel": "^4.0.3",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/package": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
