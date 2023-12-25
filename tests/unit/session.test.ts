@@ -342,8 +342,8 @@ describe('Session', () => {
 
 			await session.setData({ user_id: 'user_id', name: 'name' });
 
-			expect(mockStore.set).toBeCalledTimes(0);
 			expect(session.data).toEqual({ user_id: 'user_id', name: 'name' });
+			expect(mockStore.set).toBeCalledTimes(0);
 		});
 
 		it('when saveUninitialized is true, store.set is called', async () => {
@@ -365,6 +365,76 @@ describe('Session', () => {
 				Infinity
 			);
 			expect(session.data).toEqual({ user_id: 'user_id', name: 'name' });
+		});
+	});
+
+	describe('save', () => {
+		it('both store.set and cookies.set is called', async () => {
+			const session = new Session(mockEvent, {
+				secret: 'my-secret',
+				store: mockStore,
+				saveUninitialized: false
+			});
+
+			await session.save();
+
+			expect(session.data).toEqual({});
+			expect(mockStore.set).toBeCalledTimes(1);
+			expect(mockStore.set).toBeCalledWith(
+				session.id,
+				{
+					cookie: { path: '/', httpOnly: true, sameSite: 'lax', secure: false },
+					data: {}
+				},
+				Infinity
+			);
+			expect(mockEvent.cookies.set).toBeCalledTimes(1);
+			expect(mockEvent.cookies.set).toBeCalledWith(
+				session.cookieName,
+				expect.any(String),
+				session.cookie
+			);
+		});
+	});
+
+	describe('regenerate', () => {
+		it('session is regenerated', async () => {
+			const session = new Session(mockEvent, {
+				secret: 'my-secret',
+				store: mockStore,
+				saveUninitialized: false,
+				cookie: { maxAge: 600 }
+			});
+
+			await session.setData({ user_id: 'user_id', name: 'name' });
+			const newSession = await session.regenerate();
+
+			expect(session.id).not.toBe(newSession.id);
+			expect(session.cookie).toEqual(newSession.cookie);
+			expect(session.data).toEqual({ user_id: 'user_id', name: 'name' });
+			expect(newSession.data).toEqual({});
+			expect(mockStore.destroy).toBeCalledTimes(1);
+			expect(mockStore.destroy).toBeCalledWith(session.id);
+			expect(mockEvent.cookies.delete).toBeCalledTimes(1);
+			expect(mockEvent.cookies.delete).toBeCalledWith(session.cookieName, { path: '/' });
+		});
+	});
+
+	describe('destroy', () => {
+		it('both store.destroy and cookies.delete is called', async () => {
+			const session = new Session(mockEvent, {
+				secret: 'my-secret',
+				store: mockStore,
+				saveUninitialized: false,
+				cookie: { maxAge: 600 }
+			});
+
+			await session.destroy();
+
+			expect(mockStore.destroy).toBeCalledTimes(1);
+			expect(mockStore.destroy).toBeCalledWith(session.id);
+			expect(mockEvent.cookies.delete).toBeCalledTimes(1);
+			expect(mockEvent.cookies.delete).toBeCalledWith(session.cookieName, { path: '/' });
 		});
 	});
 

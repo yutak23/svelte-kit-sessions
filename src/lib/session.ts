@@ -23,7 +23,7 @@ const getTtlMs = (cookie: CookieSerializeOptions): number => {
 
 	if (maxAge) return maxAge * 1000;
 	if (expires) {
-		const ms = Number(new Date(expires)) - Date.now();
+		const ms = Number(expires) - Date.now();
 		return Math.ceil(ms / 1000) * 1000;
 	}
 	return Infinity;
