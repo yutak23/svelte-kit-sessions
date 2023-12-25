@@ -1,4 +1,4 @@
-name: ci
+name: adapter-build
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
             'vercel_edge',
             'vercel_severless'
           ]
-    name: adapter-build_${{ matrix.adapter }}_test
+    name: adapter-build-${{ matrix.adapter }}-test
 
     steps:
       - uses: actions/checkout@v3
