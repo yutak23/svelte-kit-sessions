@@ -1,66 +1,181 @@
-# create-svelte
+# svelte-kit-session
 
-Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+[![npm](https://img.shields.io/npm/v/svelte-kit-session.svg)](https://www.npmjs.com/package/svelte-kit-session)
+[![unit test](https://github.com/yutak23/svelte-kit-session/actions/workflows/unit-test.yaml/badge.svg)](https://github.com/yutak23/svelte-kit-session/actions/workflows/unit-test.yaml)
+[![integration test](https://github.com/yutak23/svelte-kit-session/actions/workflows/integration-test.yaml/badge.svg)](https://github.com/yutak23/svelte-kit-session/actions/workflows/integration-test.yaml)
+![style](https://img.shields.io/badge/code%20style-airbnb-ff5a5f.svg)
 
-Read more about creating a library [in the docs](https://kit.svelte.dev/docs/packaging).
+Svelte Kit Session is a module for easy and efficient session management in SvelteKit. It is characterized by the flexibility of being able to freely select a store.
 
-## Creating a project
+## Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+- **Simple session management module**: Svelte Kit Session is designed to be simple enough to be used in a variety of use cases, including a pattern in which sessions are paid out after authentication by the user's own application, or after authentication using OpenID Connect.
+- **Customizable Store**: In addition to the default MemoryStore, various other stores such as Redis and Cloudflare KV are available
+- **Also available in edge environments**: Svelte Kit Session also supports use in the Edge environment such as Cloudflare Pages Functions(Cloudflare Workers).
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Installation
 
-# create a new project in my-app
-npm create svelte@latest my-app
+```console
+$ npm i svelte-kit-session
+
+$ yarn add svelte-kit-session
+
+$ pnpm add svelte-kit-session
 ```
 
-## Developing
+## Usage
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+```ts
+// src/hooks.server.ts
+import type { Handle } from '@sveltejs/kit';
+import { sveltekitSessionHandle } from 'svelte-kit-session';
 
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+export const handle: Handle = sveltekitSessionHandle({ secret: 'secret', saveUninitialized: true });
 ```
 
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
+or if you want to use it with your own handle, you can use [sequence](https://kit.svelte.dev/docs/modules#sveltejs-kit-hooks-sequence).
 
-## Building
+```ts
+// src/hooks.server.ts
+import type { Handle } from '@sveltejs/kit';
+import { sequence } from '@sveltejs/kit/hooks';
+import { sveltekitSessionHandle } from 'svelte-kit-session';
 
-To build your library:
+const yourOwnHandle: Handle = async ({ event, resolve }) => {
+	// `event.locals.session` is available
+	// your code here
+	const result = await resolve(event);
+	return result;
+};
 
-```bash
-npm run package
+export const handle: Handle = sequence(
+	sveltekitSessionHandle({ secret: 'secret', saveUninitialized: true }),
+	yourOwnHandle
+);
 ```
 
-To create a production version of your showcase app:
+After the above implementation, you can use the following in Actions and API routes.
 
-```bash
-npm run build
+### Actions
+
+```ts
+// src/routes/login/+page.server.ts
+import type { ServerLoad, Actions } from '@sveltejs/kit';
+import type Session from 'svelte-kit-session';
+import db from '$lib/server/db.ts';
+
+export const load: ServerLoad = async ({ locals }) => {
+	const session: Session = locals; // you can access `locals.session`
+	const user = await db.getUserFromId(session.data.userId);
+	return { user };
+};
+
+export const actions: Actions = {
+	login: async ({ request, locals }) => {
+		const session: Session = locals; // you can access `locals.session`
+
+		const data = await request.formData();
+		const email = data.get('email');
+		const password = data.get('password');
+		const user = await db.getUser(email, password);
+
+		await session.setData({ id: user.id, name: user.name }); // set data to session
+		await session.save(); // session saveand session create(session data is stored and set-cookie)
+
+		return { success: true };
+	},
+	...
+};
 ```
 
-You can preview the production build with `npm run preview`.
+### API route
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+```ts
+// src/routes/api/todo/+server.ts
+import { json, type RequestEvent, type RequestHandler } from '@sveltejs/kit';
+import db from '$lib/server/db.ts';
 
-## Publishing
+interface TodoBody {
+	title: string;
+	memo: string;
+}
 
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
+export const POST: RequestHandler = async (event: RequestEvent) => {
+	const { title, memo } = (await event.request.json()) as TodoBody;
 
-To publish your library to [npm](https://www.npmjs.com):
+	const todoId = await db.createTodo({ title, memo, userId: event.locals.session.data.userId });
 
-```bash
-npm publish
+	return json({ id: todoId }, { status: 200 });
+};
 ```
 
-Cookieのデフォルト値は、SvelteKitの動作に一致しています。
-https://kit.svelte.jp/docs/types#public-types-cookies
+### Typing your session data
 
-// https://github.com/sveltejs/kit/blob/%40sveltejs/kit%402.0.3/packages/kit/src/runtime/server/cookie.js#L40
+You can use [declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html) to define types as follows.
+
+```ts
+// src/hooks.server.ts
+declare module 'svelte-kit-session' {
+	interface SessionData {
+		userId: string;
+		name: string;
+	}
+}
+```
+
+<details>
+
+<summary>Click here to see how to use in JavaScript</summary>
+
+### JavaScript
+
+```js
+// src/hooks.server.js
+import { sveltekitSessionHandle } from 'svelte-kit-session';
+
+export const handle = sveltekitSessionHandle({ secret: 'secret', saveUninitialized: true });
+```
+
+or if you want to use it with your own handle, you can use [sequence](https://kit.svelte.dev/docs/modules#sveltejs-kit-hooks-sequence).
+
+```js
+// src/hooks.server.js
+import { sequence } from '@sveltejs/kit/hooks';
+import { sveltekitSessionHandle } from 'svelte-kit-session';
+
+const yourOwnHandle = async ({ event, resolve }) => {
+	// `event.locals.session` is available
+	// your code here
+	const result = await resolve(event);
+	return result;
+};
+
+export const handle = sequence(
+	sveltekitSessionHandle({ secret: 'secret', saveUninitialized: true }),
+	yourOwnHandle
+);
+```
+
+</details>
+
+## Config options
+
+| Name              | Type                                                                                    | Description                                                                                                                                                  |
+| ----------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| name              | string                                                                                  | The name of the session ID cookie to set in the response. The default value is 'connect.sid'.                                                                |
+| cookie            | [CookieSerializeOptions](https://github.com/jshttp/cookie?tab=readme-ov-file#options-1) | Cookie settings object. See [link](https://github.com/jshttp/cookie?tab=readme-ov-file#options-1) for details.                                               |
+| rolling           | boolean                                                                                 | Force the session identifier cookie to be set on every response. The default value is `false`.                                                               |
+| store             | [Store](https://github.com/yutak23/svelte-kit-session/blob/main/src/lib/index.ts#L120)  | The session store instance. The default value is new `MemoryStore` instance.                                                                                 |
+| secret            | string                                                                                  | This is the secret used to sign the session cookie.                                                                                                          |
+| saveUninitialized | boolean                                                                                 | Forces a session that is "uninitialized" to be saved to the store. A session is uninitialized when it is new but not modified. The default value is `false`. |
+
+### Note: About cookie default values
+
+The default value of the cookie matches the behavior of SvelteKit.
+
+https://kit.svelte.dev/docs/types#public-types-cookies
+
+However, it is implemented on the svelte-kit-session side so that `/` is set for `cookie.path`.
 
 ## How to develpment and test
 
