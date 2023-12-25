@@ -4,9 +4,14 @@ import type { SessionCookieOptions, SessionData, Store, SveltekitSessionConfig }
 import { sign, unsign } from './cookie-signature.js';
 import { uidSync } from './uid-safe.js';
 
-interface SimpleRequestEvent extends Pick<RequestEvent, 'url' | 'cookies'> {}
+interface SimpleRequestEvent extends Pick<RequestEvent, 'cookies'> {}
 
 const generateSessionId = (): string => uidSync(24);
+
+const defaultCookieOptions = (): CookieSerializeOptions & { path: string } => ({
+	// https://github.com/expressjs/session/blob/v1.17.3/session/cookie.js#L26
+	path: '/'
+});
 
 /**
  * Get the TTL in milliseconds for the given cookie options.
@@ -29,20 +34,24 @@ const getTtlMs = (cookie: CookieSerializeOptions): number => {
 	return Infinity;
 };
 
-// https://github.com/sveltejs/kit/blob/%40sveltejs/kit%402.0.3/packages/kit/src/runtime/server/cookie.js#L40
-const defaultCookieOptions = (url: URL): CookieSerializeOptions & { path: string } => ({
-	// https://github.com/expressjs/session/blob/v1.17.3/session/cookie.js#L26
-	path: '/',
-	httpOnly: true,
-	sameSite: 'lax',
-	secure: !(url.hostname === 'localhost' && url.protocol === 'http:')
-});
+const parseSessionCookieOptions = (
+	options: SveltekitSessionConfig,
+	cookieOptions: SessionCookieOptions
+): CookieSerializeOptions & { path: string } => {
+	const cookie = { ...cookieOptions } as CookieSerializeOptions & { path: string };
+
+	// Set encode in SveltekitSessionConfig.cookie(CookieSerializeOptions) because encode function cannot parse to JSON
+	if (options.cookie && options.cookie.encode)
+		cookie.encode = (value: string) => options.cookie!.encode!(value);
+	if (cookie.expires) cookie.expires = new Date(cookie.expires);
+	return cookie;
+};
 
 export default class Session {
 	constructor(event: SimpleRequestEvent, options: SveltekitSessionConfig & { store: Store }) {
 		this.#id = generateSessionId();
 		this.#cookieName = options.name || 'connect.sid';
-		this.#cookie = { ...defaultCookieOptions(event.url), ...options.cookie };
+		this.#cookie = { ...defaultCookieOptions(), ...options.cookie };
 		this.#sessionOptions = options;
 		this.#event = event;
 		this.#storeTtlMs = getTtlMs(options.cookie || {});
@@ -64,10 +73,7 @@ export default class Session {
 			const sessionData = await store.get(unsignedSid);
 			if (sessionData) {
 				session.#id = unsignedSid;
-				session.#cookie = { ...sessionData.cookie };
-				// Set encode in SveltekitSessionConfig.cookie(CookieSerializeOptions) because encode function cannot parse to JSON
-				if (options.cookie && options.cookie.encode)
-					session.#cookie.encode = (value: string) => options.cookie!.encode!(value);
+				session.#cookie = parseSessionCookieOptions(options, sessionData.cookie);
 				session.#data = sessionData.data;
 				session.#storeTtlMs = getTtlMs(sessionData.cookie);
 

@@ -20,7 +20,6 @@ const config = {
 	}
 };
 
-console.log('process.env.ADAPTER', process.env.ADAPTER);
 if (process.env.ADAPTER === 'node') config.kit.adapter = nodeAdapter();
 if (process.env.ADAPTER === 'cloudflare')
 	config.kit.adapter = cloudflareAdapter({

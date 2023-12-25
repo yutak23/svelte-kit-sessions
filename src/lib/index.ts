@@ -139,7 +139,7 @@ const sveltekitSessionHandle =
 	async ({ event, resolve }) => {
 		const { locals } = event;
 		locals.session = await Session.initialize(
-			{ url: event.url, cookies: event.cookies },
+			{ cookies: event.cookies },
 			{ store: memoryStore, ...options }
 		);
 		const response = await resolve(event);

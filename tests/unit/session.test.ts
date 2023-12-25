@@ -41,13 +41,7 @@ describe('Session', () => {
 		describe('exits session', () => {
 			it('if there is data in the session store, an existing session is created', async () => {
 				const sid = 'sessionId';
-				const cookie = {
-					path: '/',
-					httpOnly: true,
-					sameSite: 'lax',
-					secure: false,
-					maxAge: 600
-				};
+				const cookie = { path: '/', maxAge: 600 };
 				const data = { user_id: 'user_id', name: 'name' };
 				const signedSid = await sign('sessionId', 'my-secret');
 				mockEvent.cookies.get.mockImplementation(() => signedSid);
@@ -137,13 +131,7 @@ describe('Session', () => {
 
 		describe('no exits session', () => {
 			it('session is initialized, when cookie.get return undefined', async () => {
-				const cookie = {
-					path: '/',
-					httpOnly: true,
-					sameSite: 'lax',
-					secure: false,
-					expires: new Date('2024-01-01')
-				};
+				const cookie = { path: '/', expires: new Date('2024-01-01') };
 				mockEvent.cookies.get.mockImplementation(() => undefined);
 
 				const session = await Session.initialize(mockEvent, {
@@ -163,13 +151,7 @@ describe('Session', () => {
 
 			it('session is initialized, when no store data', async () => {
 				const signedSid = await sign('sessionId', 'my-secret');
-				const cookie = {
-					path: '/',
-					httpOnly: true,
-					sameSite: 'lax',
-					secure: false,
-					expires: new Date('2024-01-01')
-				};
+				const cookie = { path: '/', expires: new Date('2024-01-01') };
 				mockEvent.cookies.get.mockImplementation(() => signedSid);
 				mockStore.get.mockImplementation(() => null);
 
@@ -189,12 +171,7 @@ describe('Session', () => {
 			});
 
 			it('session is initialized and set cookie, when saveUninitialized is true', async () => {
-				const cookie = {
-					path: '/',
-					httpOnly: true,
-					sameSite: 'lax',
-					secure: false
-				};
+				const cookie = { path: '/' };
 				mockEvent.cookies.get.mockImplementation(() => undefined);
 
 				const session = await Session.initialize(mockEvent, {
@@ -227,14 +204,7 @@ describe('Session', () => {
 		describe('getTtlMs', () => {
 			it('if both maxAge and expire are present, then maxAge', async () => {
 				const dt = DateTime.now().plus({ minutes: 30 });
-				const cookie = {
-					path: '/',
-					httpOnly: true,
-					sameSite: 'lax',
-					secure: false,
-					expires: dt.toJSDate(),
-					maxAge: 600
-				};
+				const cookie = { path: '/', expires: dt.toJSDate(), maxAge: 600 };
 				mockEvent.cookies.get.mockImplementation(() => undefined);
 
 				const session = await Session.initialize(mockEvent, {
@@ -254,13 +224,7 @@ describe('Session', () => {
 			});
 
 			it('if only set maxAge, then maxAge', async () => {
-				const cookie = {
-					path: '/',
-					httpOnly: true,
-					sameSite: 'lax',
-					secure: false,
-					maxAge: 600
-				};
+				const cookie = { path: '/', maxAge: 600 };
 				mockEvent.cookies.get.mockImplementation(() => undefined);
 
 				const session = await Session.initialize(mockEvent, {
@@ -281,13 +245,7 @@ describe('Session', () => {
 
 			it('if only set expire, then expire', async () => {
 				const dt = DateTime.now().plus({ minutes: 30 });
-				const cookie = {
-					path: '/',
-					httpOnly: true,
-					sameSite: 'lax',
-					secure: false,
-					expires: dt.toJSDate()
-				};
+				const cookie = { path: '/', expires: dt.toJSDate() };
 				mockEvent.cookies.get.mockImplementation(() => undefined);
 
 				const session = await Session.initialize(mockEvent, {
@@ -307,12 +265,7 @@ describe('Session', () => {
 			});
 
 			it('if both maxAge and expire are not set, then Infinity', async () => {
-				const cookie = {
-					path: '/',
-					httpOnly: true,
-					sameSite: 'lax',
-					secure: false
-				};
+				const cookie = { path: '/' };
 				mockEvent.cookies.get.mockImplementation(() => undefined);
 
 				const session = await Session.initialize(mockEvent, {
@@ -328,6 +281,48 @@ describe('Session', () => {
 				expect(mockEvent.cookies.set).toBeCalledWith('init-session', expect.any(String), cookie);
 				expect(mockStore.set).toBeCalledTimes(1);
 				expect(mockStore.set).toBeCalledWith(session.id, { cookie, data: {} }, Infinity);
+			});
+		});
+
+		describe('parseSessionCookieOptions', () => {
+			it('expire and encode are set', async () => {
+				const expires = new Date();
+				expires.setDate(expires.getDate() + 14);
+				const sid = 'sessionId';
+				const cookie = {
+					path: '/',
+					httpOnly: true,
+					sameSite: 'lax',
+					secure: false,
+					maxAge: 600,
+					expires,
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+					encode: expect.any(Function)
+				};
+				const data = { user_id: 'user_id', name: 'name' };
+				const signedSid = await sign('sessionId', 'my-secret');
+				mockEvent.cookies.get.mockImplementation(() => signedSid);
+				mockStore.get.mockImplementation((unsignedSid: string) => {
+					if (unsignedSid === sid) return { cookie, data };
+					return null;
+				});
+
+				const session = await Session.initialize(mockEvent, {
+					secret: 'my-secret',
+					store: mockStore,
+					name: 'exits-session',
+					rolling: true,
+					cookie: { maxAge: 600, expires, encode: (val: string) => `${val}_encode` }
+				});
+
+				expect(session.id).toBe(sid);
+				expect(session.cookie).toEqual(cookie);
+				expect(session.cookie.encode!('test')).toBe('test_encode');
+				expect(session.data).toEqual(data);
+				expect(mockEvent.cookies.set).toBeCalledTimes(1);
+				expect(mockEvent.cookies.set).toBeCalledWith('exits-session', signedSid, cookie);
+				expect(mockStore.touch).toBeCalledTimes(1);
+				expect(mockStore.touch).toBeCalledWith(sid, cookie.maxAge);
 			});
 		});
 	});
@@ -358,10 +353,7 @@ describe('Session', () => {
 			expect(mockStore.set).toBeCalledTimes(1);
 			expect(mockStore.set).toBeCalledWith(
 				session.id,
-				{
-					cookie: { path: '/', httpOnly: true, sameSite: 'lax', secure: false },
-					data: { user_id: 'user_id', name: 'name' }
-				},
+				{ cookie: { path: '/' }, data: { user_id: 'user_id', name: 'name' } },
 				Infinity
 			);
 			expect(session.data).toEqual({ user_id: 'user_id', name: 'name' });
@@ -382,10 +374,7 @@ describe('Session', () => {
 			expect(mockStore.set).toBeCalledTimes(1);
 			expect(mockStore.set).toBeCalledWith(
 				session.id,
-				{
-					cookie: { path: '/', httpOnly: true, sameSite: 'lax', secure: false },
-					data: {}
-				},
+				{ cookie: { path: '/' }, data: {} },
 				Infinity
 			);
 			expect(mockEvent.cookies.set).toBeCalledTimes(1);
@@ -456,10 +445,7 @@ describe('Session', () => {
 			expect(mockStore.set).toBeCalledTimes(1);
 			expect(mockStore.set).toBeCalledWith(
 				session.id,
-				{
-					cookie: { path: '/', httpOnly: true, sameSite: 'lax', secure: false, maxAge: 600 },
-					data: session.data
-				},
+				{ cookie: { path: '/', maxAge: 600 }, data: session.data },
 				600000
 			);
 			expect(mockEvent.cookies.set).toBeCalledTimes(1);

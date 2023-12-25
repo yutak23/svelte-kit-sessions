@@ -27,6 +27,30 @@ const di = (): Handle => {
 			cookie: { maxAge: 60 * 60 * 24 * 7 } // 1 week
 		});
 
+	if (import.meta.configPattern === 'saveUninitialized_and_rolling')
+		return sveltekitSessionHandle({
+			secret: 'my-secret',
+			saveUninitialized: true,
+			rolling: true,
+			cookie: { maxAge: 60 * 60 * 24 * 7 } // 1 week
+		});
+
+	if (import.meta.configPattern === 'both_maxAge_and_expires') {
+		const date = new Date();
+		date.setDate(date.getDate() + 14);
+		return sveltekitSessionHandle({
+			secret: 'my-secret',
+			rolling: true,
+			cookie: {
+				maxAge: 60 * 60 * 24 * 7, // 1 week
+				expires: date, // 2 weeks
+				sameSite: 'none',
+				secure: false,
+				priority: 'high'
+			}
+		});
+	}
+
 	return sveltekitSessionHandle({
 		secret: 'my-secret'
 	});

@@ -15,7 +15,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config-pattern: ['default', 'saveUninitialized', 'rolling']
+        config-pattern:
+          [
+            'default',
+            'saveUninitialized',
+            'rolling',
+            'saveUninitialized_and_rolling',
+            'both_maxAge_and_expires'
+          ]
     name: config-pattern_${{ matrix.config-pattern }}_test
 
     steps:

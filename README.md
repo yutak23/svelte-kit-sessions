@@ -57,6 +57,11 @@ To publish your library to [npm](https://www.npmjs.com):
 npm publish
 ```
 
+Cookieのデフォルト値は、SvelteKitの動作に一致しています。
+https://kit.svelte.jp/docs/types#public-types-cookies
+
+// https://github.com/sveltejs/kit/blob/%40sveltejs/kit%402.0.3/packages/kit/src/runtime/server/cookie.js#L40
+
 ## How to develpment and test
 
 Please be sure to read [Attention](#attension) first!
