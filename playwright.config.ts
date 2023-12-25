@@ -12,7 +12,8 @@ const config: PlaywrightTestConfig = {
 	testDir: 'tests',
 	// eslint-disable-next-line prefer-regex-literals
 	testMatch: new RegExp(`/integration/${configPattern}(.test|.spec).[jt]s`),
-	testIgnore: /\/lib\/.*\.test\.ts/
+	testIgnore: /\/lib\/.*\.test\.ts/,
+	reporter: 'list'
 };
 
 export default config;

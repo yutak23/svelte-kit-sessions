@@ -1,15 +1,19 @@
 import { json, type RequestEvent, type RequestHandler } from '@sveltejs/kit';
 
+interface RequestBody {
+	user_id: string;
+	name: string;
+}
+
 // eslint-disable-next-line import/prefer-default-export
-export const GET: RequestHandler = async (event: RequestEvent) => {
+export const POST: RequestHandler = async (event: RequestEvent) => {
 	const { session } = event.locals;
 	if (!session.id) throw new Error('session is undefined');
 
+	const { user_id: userId, name } = (await event.request.json()) as RequestBody;
+
 	const newSession = await session.regenerate();
-	await newSession.setData({
-		re_user_id: crypto.randomUUID(),
-		re_name: btoa(crypto.getRandomValues(new Uint8Array(4)).toString())
-	});
+	await newSession.setData({ user_id: userId, name });
 	await newSession.save();
 
 	return json({ session_data: newSession.data });

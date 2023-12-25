@@ -1,9 +1,13 @@
 import { json, type RequestEvent, type RequestHandler } from '@sveltejs/kit';
+import lodash from 'lodash';
 
 interface RequestBody {
 	user_id: string;
 	name: string;
 }
+
+// eslint-disable-next-line @typescript-eslint/unbound-method
+const { isEqual } = lodash;
 
 // eslint-disable-next-line import/prefer-default-export
 export const POST: RequestHandler = async (event: RequestEvent) => {
@@ -12,8 +16,5 @@ export const POST: RequestHandler = async (event: RequestEvent) => {
 
 	const { user_id: userId, name } = (await event.request.json()) as RequestBody;
 
-	await session.setData({ user_id: userId, name });
-	await session.save();
-
-	return json({ session_data: session.data });
+	return json({ is_equal: isEqual(session.data, { user_id: userId, name }) });
 };

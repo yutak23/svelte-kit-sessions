@@ -1,167 +1,221 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-import { expect, test } from '@playwright/test';
+import { expect, test, type APIResponse } from '@playwright/test';
+import { parse, serialize } from 'cookie';
+
+const parseCookieFromResponse = (cookie: APIResponse): Record<string, string> => {
+	const setCookie = cookie.headers()['set-cookie'];
+	if (!setCookie) return {};
+	const parsedCookie = parse(setCookie);
+	if (setCookie.includes('HttpOnly;')) parsedCookie.HttpOnly = 'true';
+	return parsedCookie;
+};
 
 test.beforeEach('Clear cookie', async ({ context }) => {
 	await context.clearCookies();
 });
 
+/**
+ * session is created by saving
+ *
+ * Test scenario
+ * 1. If there is no cookie in the request, the session does not exist
+ * 2. Session is created by save
+ * 3. Session exists
+ * 4. Session data is the same as the data saved in 2
+ */
 test('session is created by saving', async ({ request }) => {
-	/* not exist session */
-	const existResponse = await request.get('/api/test/exist-session');
+	// 1
+	const existResponse = await request.post('/api/test/exist-session');
 	const { exits } = (await existResponse.json()) as { exits: boolean };
 	expect(existResponse.status()).toBe(200);
 	expect(exits).toBe(false);
 
-	/* save session(create session) */
-	const saveResponse = await request.get('/api/test/save-session');
+	// 2
+	const saveResponse = await request.post('/api/test/save-session', {
+		data: { user_id: 'user_id_test', name: 'name_test' }
+	});
 	const { session_data: saveSessionData } = (await saveResponse.json()) as {
 		session_data: { user_id: string; name: string };
 	};
-	const saveCookie = saveResponse.headers()['set-cookie'];
+	const saveCookie = parseCookieFromResponse(saveResponse);
 	expect(saveResponse.status()).toBe(200);
-	expect(saveSessionData.user_id).toEqual(expect.any(String));
-	expect(saveSessionData.name).toEqual(expect.any(String));
-	expect(saveCookie).toContain('connect.sid');
-	expect(saveCookie).toContain('Path=/');
-	expect(saveCookie).toContain('HttpOnly');
-	expect(saveCookie).toContain('SameSite=Lax');
+	expect(saveSessionData.user_id).toEqual('user_id_test');
+	expect(saveSessionData.name).toEqual('name_test');
+	expect(saveCookie['connect.sid']).toEqual(expect.any(String));
+	expect(saveCookie.Path).toBe('/');
+	expect(saveCookie.HttpOnly).toBe('true');
+	expect(saveCookie.SameSite).toBe('Lax');
 
-	/* exist session */
-	const existResponse2 = await request.get('/api/test/exist-session', { headers: { saveCookie } });
+	// 3
+	const existResponse2 = await request.post('/api/test/exist-session', {
+		headers: { cookie: serialize('connect.sid', saveCookie['connect.sid']) }
+	});
 	const { exits: exits2 } = (await existResponse2.json()) as { exits: boolean };
 	expect(existResponse2.status()).toBe(200);
 	expect(exits2).toBe(true);
 
-	/* session is same */
-	const getResponse = await request.get('/api/test/get-session', { headers: { saveCookie } });
-	const { session_data: getSessionData } = (await getResponse.json()) as {
-		session_data: { user_id: string; name: string };
+	// 4
+	const isequalResponse = await request.post('/api/test/isequal-session', {
+		data: { user_id: 'user_id_test', name: 'name_test' },
+		headers: { cookie: serialize('connect.sid', saveCookie['connect.sid']) }
+	});
+	const { is_equal: isEqual } = (await isequalResponse.json()) as {
+		is_equal: boolean;
 	};
-	expect(getResponse.status()).toBe(200);
-	expect(getSessionData).toEqual(saveSessionData);
+	expect(isequalResponse.status()).toBe(200);
+	expect(isEqual).toBeTruthy();
 });
 
+/**
+ * `saveUninitialized` is `false`, no session is created if not saved
+ *
+ * Test scenario
+ * 1. If there is no cookie in the request, the session does not exist
+ * 2. Session is not created by setData
+ */
 test('`saveUninitialized` is `false`, no session is created if not saved', async ({ request }) => {
-	/* not exist session */
-	const existResponse = await request.get('/api/test/exist-session');
+	// 1
+	const existResponse = await request.post('/api/test/exist-session');
 	const { exits } = (await existResponse.json()) as { exits: boolean };
 	expect(existResponse.status()).toBe(200);
 	expect(exits).toBe(false);
 
-	/* not save session(not create session) and no set-cookie */
-	const saveResponse = await request.get('/api/test/only-setData');
-	const { session_data: saveSessionData } = (await saveResponse.json()) as {
+	// 2
+	const setDataResponse = await request.post('/api/test/only-setData', {
+		data: { user_id: 'user_id_test', name: 'name_test' }
+	});
+	const { session_data: saveSessionData } = (await setDataResponse.json()) as {
 		session_data: { user_id: string; name: string };
 	};
-	const saveCookie = saveResponse.headers()['set-cookie'];
-	expect(saveResponse.status()).toBe(200);
+	const saveCookie = parseCookieFromResponse(setDataResponse);
+	expect(setDataResponse.status()).toBe(200);
 	expect(saveSessionData.user_id).toEqual(expect.any(String));
 	expect(saveSessionData.name).toEqual(expect.any(String));
-	expect(saveCookie).toBeUndefined();
+	expect(saveCookie).toEqual({});
 });
 
+/**
+ * session can be regenerated
+ *
+ * Test scenario
+ * 1. If there is no cookie in the request, the session does not exist
+ * 2. Session is created by save
+ * 3. Session exists
+ * 4. Session data is the same as the data saved in 2
+ * 5. Session is regenerated
+ * 6. Session exists
+ * 7. Session data is the same as the data saved in 5
+ */
 test('session can be regenerated', async ({ request }) => {
-	/* not exist session */
-	const existResponse = await request.get('/api/test/exist-session');
+	// 1
+	const existResponse = await request.post('/api/test/exist-session');
 	const { exits } = (await existResponse.json()) as { exits: boolean };
 	expect(existResponse.status()).toBe(200);
 	expect(exits).toBe(false);
 
-	/* save session(create session) */
-	const saveResponse = await request.get('/api/test/save-session');
-	await saveResponse.json();
-	const saveCookie = saveResponse.headers()['set-cookie'];
+	// 2
+	const saveResponse = await request.post('/api/test/save-session', {
+		data: { user_id: 'user_id_test', name: 'name_test' }
+	});
+	const saveCookie = parseCookieFromResponse(saveResponse);
 	expect(saveResponse.status()).toBe(200);
 
-	/* exist session */
-	const existResponse2 = await request.get('/api/test/exist-session', { headers: { saveCookie } });
+	// 3
+	const existResponse2 = await request.post('/api/test/exist-session', {
+		headers: { cookie: serialize('connect.sid', saveCookie['connect.sid']) }
+	});
 	const { exits: exits2 } = (await existResponse2.json()) as { exits: boolean };
 	expect(existResponse2.status()).toBe(200);
 	expect(exits2).toBe(true);
 
-	/**
-	 * regenerate session
-	 *
-	 * Test Points
-	 * - [x] Must be a different session from the /save-session session(Must be a different cookie from the /save-session cookie).
-	 * - [x] Must be session data is different.
-	 */
-	const regenerateResponse = await request.get('/api/test/regenerate-session', {
-		headers: { saveCookie }
+	// 4
+	const isequalResponse = await request.post('/api/test/isequal-session', {
+		data: { user_id: 'user_id_test', name: 'name_test' },
+		headers: { cookie: serialize('connect.sid', saveCookie['connect.sid']) }
+	});
+	const { is_equal: isEqual } = (await isequalResponse.json()) as {
+		is_equal: boolean;
+	};
+	expect(isequalResponse.status()).toBe(200);
+	expect(isEqual).toBeTruthy();
+
+	// 5
+	const regenerateResponse = await request.post('/api/test/regenerate-session', {
+		data: { user_id: 'user_id_regenerate', name: 'name_regenerate' },
+		headers: { cookie: serialize('connect.sid', saveCookie['connect.sid']) }
 	});
 	const { session_data: regenerateSessionData } = (await regenerateResponse.json()) as {
-		session_data: { re_user_id: string; re_name: string; user_id?: string; name?: string };
+		session_data: { user_id: string; name: string };
 	};
-	const regenerateCookie = regenerateResponse.headers()['set-cookie'];
+	const regenerateCookie = parseCookieFromResponse(regenerateResponse);
 	expect(regenerateResponse.status()).toBe(200);
-	expect(regenerateSessionData.user_id).toBeUndefined();
-	expect(regenerateSessionData.name).toBeUndefined();
-	expect(regenerateSessionData.re_user_id).toEqual(expect.any(String));
-	expect(regenerateSessionData.re_name).toEqual(expect.any(String));
-	expect(regenerateCookie).toContain('connect.sid');
-	expect(regenerateCookie).toContain('Path=/');
-	expect(regenerateCookie).toContain('HttpOnly');
-	expect(regenerateCookie).toContain('SameSite=Lax');
-	expect(regenerateCookie).not.toBe(saveCookie);
+	expect(regenerateSessionData.user_id).toEqual('user_id_regenerate');
+	expect(regenerateSessionData.name).toEqual('name_regenerate');
+	expect(regenerateCookie['connect.sid']).toEqual(expect.any(String));
+	expect(regenerateCookie.Path).toBe('/');
+	expect(regenerateCookie.HttpOnly).toBe('true');
+	expect(regenerateCookie.SameSite).toBe('Lax');
+	expect(regenerateCookie['connect.sid']).not.toBe(saveCookie['connect.sid']);
 
-	/* exist session */
-	const existResponse3 = await request.get('/api/test/exist-session', {
-		headers: { regenerateCookie }
+	// 6
+	const existResponse3 = await request.post('/api/test/exist-session', {
+		headers: { cookie: serialize('connect.sid', regenerateCookie['connect.sid']) }
 	});
 	const { exits: exits3 } = (await existResponse3.json()) as { exits: boolean };
 	expect(existResponse3.status()).toBe(200);
 	expect(exits3).toBe(true);
 
-	/* session is same */
-	const getResponse = await request.get('/api/test/get-session', { headers: { regenerateCookie } });
-	const { session_data: getSessionData } = (await getResponse.json()) as {
-		session_data: { re_user_id: string; re_name: string };
+	// 7
+	const isequalResponse2 = await request.post('/api/test/isequal-session', {
+		data: { user_id: 'user_id_regenerate', name: 'name_regenerate' },
+		headers: { cookie: serialize('connect.sid', regenerateCookie['connect.sid']) }
+	});
+	const { is_equal: isEqual2 } = (await isequalResponse2.json()) as {
+		is_equal: boolean;
 	};
-	expect(getResponse.status()).toBe(200);
-	expect(getSessionData).toEqual(regenerateSessionData);
+	expect(isequalResponse2.status()).toBe(200);
+	expect(isEqual2).toBeTruthy();
 });
 
+/**
+ * session can be destroyed
+ *
+ * Test scenario
+ * 1. If there is no cookie in the request, the session does not exist
+ * 2. Session is created by save
+ * 3. Session exists
+ * 4. Session is deleted
+ */
 test('session can be destroyed', async ({ request }) => {
-	/* not exist session */
-	const existResponse = await request.get('/api/test/exist-session');
+	// 1
+	const existResponse = await request.post('/api/test/exist-session');
 	const { exits } = (await existResponse.json()) as { exits: boolean };
 	expect(existResponse.status()).toBe(200);
 	expect(exits).toBe(false);
 
-	/* save session(create session) */
-	const saveResponse = await request.get('/api/test/save-session');
-	await saveResponse.json();
-	const saveCookie = saveResponse.headers()['set-cookie'];
+	// 2
+	const saveResponse = await request.post('/api/test/save-session', {
+		data: { user_id: 'user_id_test', name: 'name_test' }
+	});
+	const saveCookie = parseCookieFromResponse(saveResponse);
 	expect(saveResponse.status()).toBe(200);
 
-	/* exist session */
-	const existResponse2 = await request.get('/api/test/exist-session', { headers: { saveCookie } });
+	// 3
+	const existResponse2 = await request.post('/api/test/exist-session', {
+		headers: { cookie: serialize('connect.sid', saveCookie['connect.sid']) }
+	});
 	const { exits: exits2 } = (await existResponse2.json()) as { exits: boolean };
 	expect(existResponse2.status()).toBe(200);
 	expect(exits2).toBe(true);
 
-	/**
-	 * destroy session
-	 *
-	 * Test Points
-	 * - [x] Must be cookie value is empty.(Must be a different cookie from the /save-session cookie).
-	 */
-	const destroyResponse = await request.get('/api/test/destroy-session', {
-		headers: { saveCookie }
+	// 4
+	const destroyResponse = await request.post('/api/test/destroy-session', {
+		headers: { cookie: serialize('connect.sid', saveCookie['connect.sid']) }
 	});
-	const destroyCookie = destroyResponse.headers()['set-cookie'];
+	const destroyCookie = parseCookieFromResponse(destroyResponse);
 	expect(destroyResponse.status()).toBe(200);
-	expect(destroyCookie).toContain('connect.sid=;');
-	expect(destroyCookie).toContain('Path=/');
-	expect(destroyCookie).toContain('HttpOnly');
-	expect(destroyCookie).toContain('SameSite=Lax');
-	expect(destroyCookie).not.toBe(saveCookie);
-
-	/* not exist session */
-	const existResponse3 = await request.get('/api/test/exist-session', {
-		headers: { destroyCookie }
-	});
-	const { exits: exits3 } = (await existResponse3.json()) as { exits: boolean };
-	expect(existResponse3.status()).toBe(200);
-	expect(exits3).toBe(false);
+	expect(destroyCookie['connect.sid']).toBe('');
+	expect(destroyCookie.Path).toBe('/');
+	expect(destroyCookie.HttpOnly).toBe('true');
+	expect(destroyCookie.SameSite).toBe('Lax');
+	expect(destroyCookie['Max-Age']).toBe('0');
 });

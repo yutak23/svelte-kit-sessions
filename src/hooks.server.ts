@@ -13,9 +13,15 @@ declare module '$lib/index.js' {
 const di = (): Handle => {
 	if (import.meta.configPattern === 'default')
 		return sveltekitSessionHandle({ secret: 'my-secret' });
+
+	if (import.meta.configPattern === 'saveUninitialized')
+		return sveltekitSessionHandle({
+			secret: 'my-secret',
+			saveUninitialized: true
+		});
+
 	return sveltekitSessionHandle({
-		secret: 'my-secret',
-		saveUninitialized: true
+		secret: 'my-secret'
 	});
 };
 
