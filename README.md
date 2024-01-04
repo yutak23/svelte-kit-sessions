@@ -176,7 +176,7 @@ developing.
 
 For a list of stores, see [Compatible Session Stores](#compatible-session-stores).
 
-#### Apis(class methods)
+### Apis(class methods)
 
 A summary of the `event.locals.session` class methods is as follows.
 
@@ -187,26 +187,26 @@ A summary of the `event.locals.session` class methods is as follows.
 | regenerate | _nothing_      | Promise\<void\> | Regenerate the session simply invoke the method.         |
 | destroy    | _nothing_      | Promise\<void\> | Destroy the session.                                     |
 
-##### session.setData(data)
+#### session.setData(data)
 
 Set data in the session.
 
 **Note** If `saveUninitialized` is `true`, the session is saved without calling `save()`.
 Conversely, if `saveUninitialized` is `false`, call `save()` to explicitly save the session.
 
-###### arguments
+##### arguments
 
 1. SessionData  
    Data to be stored in the session.  
    In TypeScript, you can declare additional properties on your session object using [declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html) for interface `SessionData`.
 
-###### return
+##### return
 
 Promise\<void\>
 
-##### session.save()
+#### session.save()
 
-#### Options
+### Options
 
 A summary of the `options` is as follows.
 
@@ -219,13 +219,13 @@ A summary of the `options` is as follows.
 | secret            | string                                                                                  | _required_        | This is the secret used to sign the session cookie.                                                                                                          |
 | saveUninitialized | boolean                                                                                 | _optional_        | Forces a session that is "uninitialized" to be saved to the store. A session is uninitialized when it is new but not modified. The default value is `false`. |
 
-##### name
+#### name
 
 The name of the session ID cookie to set in the response (and read from in the request). The default value is 'connect.sid'.
 
 **Note** If you have multiple apps running on the same hostname (this is just the name, i.e. `localhost` or `127.0.0.1`; different schemes and ports do not name a different hostname), then you need to separate the session cookies from each other. The simplest method is to simply set different names per app.
 
-##### cookie
+#### cookie
 
 Cookie settings object. Exactly the same options that can be specified in `cookie.serialize` of the [cookie npm package](https://www.npmjs.com/package/cookie).
 
@@ -233,35 +233,35 @@ Cookie settings object. Exactly the same options that can be specified in `cooki
 
 The following are options that can be set in this object.
 
-###### cookie.domain
+##### cookie.domain
 
 Specifies the value for the [`Domain` `Set-Cookie` attribute][rfc-6265-5.2.3]. By default, no domain is set, and most clients will consider the cookie to apply to only the current domain.
 
-###### cookie.encode
+##### cookie.encode
 
 Specifies a function that will be used to encode a cookie's value. Since value of a cookie has a limited character set (and must be a simple string), this function can be used to encode a value into a string suited for a cookie's value.
 
 The default function is the global `encodeURIComponent`, which will encode a JavaScript string into UTF-8 byte sequences and then URL-encode any that fall outside of the cookie range.
 
-###### cookie.expires
+##### cookie.expires
 
 Specifies the `Date` object to be the value for the [`Expires` `Set-Cookie` attribute][rfc-6265-5.2.1]. By default, no expiration is set, and most clients will consider this a "non-persistent cookie" and will delete it on a condition like exiting a web browser application.
 
 **Note** the [cookie storage model specification][rfc-6265-5.3] states that if both `expires` and `maxAge` are set, then `maxAge` takes precedence, but it is possible not all clients by obey this, so if both are set, they should point to the same date and time.
 
-###### cookie.httpOnly
+##### cookie.httpOnly
 
 Specifies the `boolean` value for the [`HttpOnly` `Set-Cookie` attribute][rfc-6265-5.2.6]. When truthy, the `HttpOnly` attribute is set, otherwise it is not. By default, the `HttpOnly` attribute is not set.
 
 **Note** be careful when setting this to `true`, as compliant clients will not allow client-side JavaScript to see the cookie in `document.cookie`.
 
-###### cookie.maxAge
+##### cookie.maxAge
 
 Specifies the `number` (in seconds) to be the value for the [`Max-Age` `Set-Cookie` attribute][rfc-6265-5.2.2]. The given number will be converted to an integer by rounding down. By default, no maximum age is set.
 
 **Note** the [cookie storage model specification][rfc-6265-5.3] states that if both `expires` and `maxAge` are set, then `maxAge` takes precedence, but it is possible not all clients by obey this, so if both are set, they should point to the same date and time.
 
-###### cookie.partitioned
+##### cookie.partitioned
 
 Specifies the `boolean` value for the [`Partitioned` `Set-Cookie`](rfc-cutler-httpbis-partitioned-cookies) attribute. When truthy, the `Partitioned` attribute is set, otherwise it is not. By default, the `Partitioned` attribute is not set.
 
@@ -269,11 +269,11 @@ Specifies the `boolean` value for the [`Partitioned` `Set-Cookie`](rfc-cutler-ht
 
 More information about can be found in [the proposal](https://github.com/privacycg/CHIPS).
 
-###### cookie.path
+##### cookie.path
 
 Specifies the value for the [`Path` `Set-Cookie` attribute][rfc-6265-5.2.4]. By default, the path is considered the ["default path"][rfc-6265-5.1.4].
 
-###### cookie.priority
+##### cookie.priority
 
 Specifies the `string` to be the value for the [`Priority` `Set-Cookie` attribute][rfc-west-cookie-priority-00-4.1].
 
@@ -285,7 +285,7 @@ More information about the different priority levels can be found in [the specif
 
 **Note** This is an attribute that has not yet been fully standardized, and may change in the future. This also means many clients may ignore this attribute until they understand it.
 
-###### cookie.sameSite
+##### cookie.sameSite
 
 Specifies the `boolean` or `string` to be the value for the [`SameSite` `Set-Cookie` attribute][rfc-6265bis-09-5.4.7].
 
@@ -299,13 +299,13 @@ More information about the different enforcement levels can be found in [the spe
 
 **Note** This is an attribute that has not yet been fully standardized, and may change in the future. This also means many clients may ignore this attribute until they understand it.
 
-###### cookie.secure
+##### cookie.secure
 
 Specifies the `boolean` value for the [`Secure` `Set-Cookie` attribute][rfc-6265-5.2.5]. When truthy, the `Secure` attribute is set, otherwise it is not. By default, the `Secure` attribute is not set.
 
 **note** be careful when setting this to `true`, as compliant clients will not send the cookie back to the server in the future if the browser does not have an HTTPS connection.
 
-##### rolling
+#### rolling
 
 Force the session identifier cookie to be set on every response. The expiration is reset to the original `maxAge`, resetting the expiration countdown. The default value is `false`. If `cookie.maxAge` is not set, this option is ignored.
 
@@ -316,13 +316,13 @@ with reduced potential of it occurring during on going server interactions.
 **Note** When this option is set to `true` but the `saveUninitialized` option is set to `false`, the cookie will not be set on a response with an uninitialized session.
 This option only modifies the behavior when an existing session was loaded for the request.
 
-##### store
+#### store
 
 The session store instance. The default value is new `MemoryStore` instance.
 
 **Note** See the chapter [Session Store Implementation](#session-store-implementation) for more information on the store.
 
-##### secret
+#### secret
 
 This is the secret used to sign the session cookie.
 The secret itself should be not easily parsed by a human and would best be a random set of characters.
@@ -336,7 +336,7 @@ Using a secret that cannot be guessed will reduce the ability to hijack a sessio
 
 Changing the secret value will invalidate all existing sessions.
 
-##### saveUninitialized
+#### saveUninitialized
 
 Forces a session that is "uninitialized" to be saved to the store. A session is uninitialized when it is new but not modified. The default value is `false`.
 
