@@ -1,0 +1,67 @@
+{
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": [
+		"config:base",
+		"group:allNonMajor",
+		":separateMultipleMajorReleases",
+		"schedule:earlyMondays",
+		"schedule:automergeDaily",
+		":prConcurrentLimitNone",
+		":prHourlyLimitNone",
+		":timezone(Asia/Tokyo)"
+	],
+	"labels": ["renovate"],
+	"enabledManagers": ["npm"],
+	"major": { "labels": ["renovate", "update_major"] },
+	"platformAutomerge": true,
+	"packageRules": [
+		{
+			"description": "Automerge non-major updates",
+			"matchUpdateTypes": ["minor", "patch"],
+			"automerge": true
+		},
+		{
+			"matchPackageNames": [
+				"@isaacs/ttlcache",
+				"@playwright/test",
+				"@sveltejs/adapter-auto",
+				"@sveltejs/adapter-cloudflare",
+				"@sveltejs/adapter-netlify",
+				"@sveltejs/adapter-node",
+				"@sveltejs/adapter-vercel",
+				"@sveltejs/kit",
+				"@sveltejs/package",
+				"@sveltejs/vite-plugin-svelte",
+				"@types/cookie",
+				"@types/lodash",
+				"@types/luxon",
+				"@types/node",
+				"@types/uid-safe",
+				"@typescript-eslint/eslint-plugin",
+				"@typescript-eslint/parser",
+				"@vitest/coverage-v8",
+				"cookie",
+				"eslint",
+				"eslint-config-airbnb-base",
+				"eslint-config-airbnb-typescript",
+				"eslint-config-prettier",
+				"eslint-plugin-import",
+				"eslint-plugin-svelte",
+				"lodash",
+				"luxon",
+				"npm-check-updates",
+				"prettier",
+				"prettier-plugin-svelte",
+				"publint",
+				"svelte",
+				"svelte-check",
+				"tslib",
+				"typescript",
+				"vite",
+				"vitest"
+			],
+			"rangeStrategy": "bump"
+		}
+	],
+	"ignoreDeps": []
+}
