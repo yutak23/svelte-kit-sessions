@@ -1,7 +1,8 @@
 {
 	"name": "svelte-kit-sessions",
 	"description": "A easy and efficient session management in SvelteKit",
-	"version": "0.0.2",
+	"version": "0.0.3",
+	"license": "MIT",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -76,8 +77,12 @@
 		"svelte",
 		"sveltekit",
 		"sveltekit-session",
+		"sveltekit-session-management",
+		"sveltekit-session-manager",
 		"svelte-kit",
 		"svelte-kit-session",
+		"svelte-kit-session-management",
+		"svelte-kit-session-manager",
 		"session",
 		"session-management",
 		"session-manager",
