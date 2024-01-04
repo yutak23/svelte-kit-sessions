@@ -21,7 +21,7 @@ export interface SveltekitSessionConfig {
 	 * The name of the session ID cookie to set in the response (and read from in the request).
 	 * The default value is 'connect.sid'.
 	 *
-	 * *Note* if you have multiple apps running on the same hostname (this is just the name, i.e. `localhost` or `127.0.0.1`; different schemes and ports do not name a different hostname),
+	 * *Note* If you have multiple apps running on the same hostname (this is just the name, i.e. `localhost` or `127.0.0.1`; different schemes and ports do not name a different hostname),
 	 *   then you need to separate the session cookies from each other.
 	 * The simplest method is to simply set different names per app.
 	 */

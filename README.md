@@ -5,7 +5,7 @@
 [![integration test](https://github.com/yutak23/svelte-kit-session/actions/workflows/integration-test.yaml/badge.svg)](https://github.com/yutak23/svelte-kit-session/actions/workflows/integration-test.yaml)
 ![style](https://img.shields.io/badge/code%20style-airbnb-ff5a5f.svg)
 
-Svelte Kit Session is a module for easy and efficient session management in SvelteKit.
+**Svelte Kit Session** is a module for easy and efficient session management in SvelteKit.
 
 ## Features
 
@@ -392,12 +392,12 @@ Choosing `false` is useful for implementing login sessions, reducing server stor
 
 Every session store _must_ be implement specific methods.
 
-| method  | Arguments                                                                                                                                               | Description                            |
-| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| get     | 1. id (string)                                                                                                                                          | Returns JSON data stored in the store. |
-| set     | 1. id (string)<br> 2. storeData ([SessionStoreData](https://github.com/yutak23/svelte-kit-session/blob/main/src/lib/index.ts#L108))<br> 3. ttl (number) | Stores JSON data in the store.         |
-| destroy | 1. id (string)                                                                                                                                          | Deletes a session from the store.      |
-| touch   | 1. id (string)<br> 2. ttl (number)                                                                                                                      | Update expiration with ttl.            |
+| method  | Arguments                                                                                                                                                                                                                                                                                                                                | Description                            |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| get     | 1. id (string) : session ID                                                                                                                                                                                                                                                                                                              | Returns JSON data stored in the store. |
+| set     | 1. id (string) : session ID<br> 2. storeData ([SessionStoreData](https://github.com/yutak23/svelte-kit-session/blob/main/src/lib/index.ts#L108)) : JSON data to be stored in the store<br> 3. ttl (number) : ttl milliseconds calculated from cookie options expires, maxAge(if neither is set, the ttl value passed will be _Infinity_) | Stores JSON data in the store.         |
+| destroy | 1. id (string) : session ID                                                                                                                                                                                                                                                                                                              | Deletes a session from the store.      |
+| touch   | 1. id (string) : session ID<br> 2. ttl (number) : ttl milliseconds calculated from cookie options expires, maxAge(if neither is set, the ttl value passed will be _Infinity_)                                                                                                                                                            | Update expiration with ttl.            |
 
 <details>
 
