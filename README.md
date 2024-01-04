@@ -1,17 +1,20 @@
 # svelte-kit-sessions
 
 [![npm](https://img.shields.io/npm/v/svelte-kit-sessions.svg)](https://www.npmjs.com/package/svelte-kit-sessions)
-[![unit test](https://github.com/yutak23/svelte-kit-session/actions/workflows/unit-test.yaml/badge.svg)](https://github.com/yutak23/svelte-kit-session/actions/workflows/unit-test.yaml)
-[![integration test](https://github.com/yutak23/svelte-kit-session/actions/workflows/integration-test.yaml/badge.svg)](https://github.com/yutak23/svelte-kit-session/actions/workflows/integration-test.yaml)
+[![unit test](https://github.com/yutak23/svelte-kit-sessions/actions/workflows/unit-test.yaml/badge.svg)](https://github.com/yutak23/svelte-kit-sessions/actions/workflows/unit-test.yaml)
+[![integration test](https://github.com/yutak23/svelte-kit-sessions/actions/workflows/integration-test.yaml/badge.svg)](https://github.com/yutak23/svelte-kit-sessions/actions/workflows/integration-test.yaml)
 ![style](https://img.shields.io/badge/code%20style-airbnb-ff5a5f.svg)
 
 **Svelte Kit Sessions** is a module for easy and efficient session management in SvelteKit.
 
 ## Features
 
-- **Simple session management module**: Svelte Kit Sessions is designed to be simple enough to be used in a variety of use cases, including a pattern in which sessions are paid out after authentication by the user's own application, or after authentication using OpenID Connect.
-- **Customizable Store**: In addition to the default MemoryStore, various other stores such as Redis and Cloudflare KV are available
-- **Also available in edge environments**: Svelte Kit Sessions also supports use in the Edge environment such as Cloudflare Pages Functions(Cloudflare Workers).
+- **Simple session management module**  
+  Svelte Kit Sessions is designed to be simple enough to be used in a variety of use cases, including a pattern in which sessions are paid out after authentication by the user's own application, or after authentication using OpenID Connect.
+- **Customizable Store**  
+  In addition to the default MemoryStore, various other stores such as Redis and Cloudflare KV are available
+- **Also available in edge environments**  
+  Svelte Kit Sessions also supports use in the Edge environment such as Cloudflare Pages Functions(Cloudflare Workers).
 
 ## Installation
 

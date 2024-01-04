@@ -1,7 +1,7 @@
 {
 	"name": "svelte-kit-sessions",
 	"description": "A easy and efficient session management in SvelteKit",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -70,5 +70,18 @@
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"type": "module"
+	"type": "module",
+	"keywords": [
+		"svelte",
+		"sveltekit",
+		"sveltekit-session",
+		"svelte-kit",
+		"svelte-kit-session",
+		"session",
+		"session-management",
+		"session-manager",
+		"session-manager-sveltekit",
+		"session-manager-svelte",
+		"session-manager-svelte-kit"
+	]
 }
