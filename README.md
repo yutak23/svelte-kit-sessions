@@ -1,17 +1,17 @@
-# svelte-kit-session
+# svelte-kit-sessions
 
-[![npm](https://img.shields.io/npm/v/svelte-kit-session.svg)](https://www.npmjs.com/package/svelte-kit-session)
+[![npm](https://img.shields.io/npm/v/svelte-kit-sessions.svg)](https://www.npmjs.com/package/svelte-kit-sessions)
 [![unit test](https://github.com/yutak23/svelte-kit-session/actions/workflows/unit-test.yaml/badge.svg)](https://github.com/yutak23/svelte-kit-session/actions/workflows/unit-test.yaml)
 [![integration test](https://github.com/yutak23/svelte-kit-session/actions/workflows/integration-test.yaml/badge.svg)](https://github.com/yutak23/svelte-kit-session/actions/workflows/integration-test.yaml)
 ![style](https://img.shields.io/badge/code%20style-airbnb-ff5a5f.svg)
 
-**Svelte Kit Session** is a module for easy and efficient session management in SvelteKit.
+**Svelte Kit Sessions** is a module for easy and efficient session management in SvelteKit.
 
 ## Features
 
-- **Simple session management module**: Svelte Kit Session is designed to be simple enough to be used in a variety of use cases, including a pattern in which sessions are paid out after authentication by the user's own application, or after authentication using OpenID Connect.
+- **Simple session management module**: Svelte Kit Sessions is designed to be simple enough to be used in a variety of use cases, including a pattern in which sessions are paid out after authentication by the user's own application, or after authentication using OpenID Connect.
 - **Customizable Store**: In addition to the default MemoryStore, various other stores such as Redis and Cloudflare KV are available
-- **Also available in edge environments**: Svelte Kit Session also supports use in the Edge environment such as Cloudflare Pages Functions(Cloudflare Workers).
+- **Also available in edge environments**: Svelte Kit Sessions also supports use in the Edge environment such as Cloudflare Pages Functions(Cloudflare Workers).
 
 ## Installation
 
@@ -275,7 +275,7 @@ The name of the session ID cookie to set in the response (and read from in the r
 
 Cookie settings object. Exactly the same options that can be specified in `cookie.serialize` of the [cookie npm package](https://www.npmjs.com/package/cookie).
 
-**Note** The default value of the cookie matches the behavior of SvelteKit. For more details, please check https://kit.svelte.dev/docs/types#public-types-cookies. However, for the `cookie.path`, it is implemented so that `/` is set on the Svelte Kit Session side.
+**Note** The default value of the cookie matches the behavior of SvelteKit. For more details, please check https://kit.svelte.dev/docs/types#public-types-cookies. However, for the `cookie.path`, it is implemented so that `/` is set on the Svelte Kit Sessions side.
 
 The following are options that can be set in this object.
 

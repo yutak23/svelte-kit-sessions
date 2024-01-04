@@ -1,5 +1,6 @@
 {
-	"name": "svelte-kit-session",
+	"name": "svelte-kit-sessions",
+	"description": "A easy and efficient session management in SvelteKit",
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "vite dev",
