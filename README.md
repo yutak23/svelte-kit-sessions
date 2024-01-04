@@ -180,12 +180,12 @@ For a list of stores, see [Compatible Session Stores](#compatible-session-stores
 
 A summary of the `event.locals.session` class methods is as follows.
 
-| Name       | Arguments      | Return          | Description                                              |
-| ---------- | -------------- | --------------- | -------------------------------------------------------- |
-| setData    | 1. SessionData | Promise\<void\> | Set data in the session.                                 |
-| save       | _nothing_      | Promise\<void\> | Save the session (save session to store) and set cookie. |
-| regenerate | _nothing_      | Promise\<void\> | Regenerate the session simply invoke the method.         |
-| destroy    | _nothing_      | Promise\<void\> | Destroy the session.                                     |
+| Name       | Arguments                                          | Return          | Description                                              |
+| ---------- | -------------------------------------------------- | --------------- | -------------------------------------------------------- |
+| setData    | 1. data ([SessionData](#typing-your-session-data)) | Promise\<void\> | Set data in the session.                                 |
+| save       | _nothing_                                          | Promise\<void\> | Save the session (save session to store) and set cookie. |
+| regenerate | _nothing_                                          | Promise\<void\> | Regenerate the session simply invoke the method.         |
+| destroy    | _nothing_                                          | Promise\<void\> | Destroy the session.                                     |
 
 #### session.setData(data)
 
@@ -389,6 +389,65 @@ Forces a session that is "uninitialized" to be saved to the store. A session is 
 Choosing `false` is useful for implementing login sessions, reducing server storage usage, or complying with laws that require permission before setting a cookie. Choosing `false` will also help with race conditions where a client makes multiple parallel requests without a session.
 
 ## Session Store Implementation
+
+Every session store _must_ be implement specific methods.
+
+| method  | Arguments                                                                                                                                               | Description                            |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| get     | 1. id (string)                                                                                                                                          | Returns JSON data stored in the store. |
+| set     | 1. id (string)<br> 2. storeData ([SessionStoreData](https://github.com/yutak23/svelte-kit-session/blob/main/src/lib/index.ts#L108))<br> 3. ttl (number) | Stores JSON data in the store.         |
+| destroy | 1. id (string)                                                                                                                                          | Deletes a session from the store.      |
+| touch   | 1. id (string)<br> 2. ttl (number)                                                                                                                      | Update expiration with ttl.            |
+
+<details>
+
+<summary>Click here to see TypeScript interface definition.</summary>
+
+```ts
+/**
+ * Session store interface.
+ * When implementing a custom store, implement it so that it has the following methods.
+ *
+ * MemoryStore would be helpful.
+ * @see MemoryStore
+ */
+interface Store {
+	/**
+	 * Returns JSON data stored in the store.
+	 * @param id The session ID
+	 * @returns JSON data stored in the store
+	 */
+	get(id: string): Promise<SessionStoreData | null>;
+	/**
+	 * Stores JSON data in the store.
+	 * @param id The session ID
+	 * @param storeData JSON data to store
+	 * @param ttl Time to live in milliseconds. This ttl is calculated with a priority of maxAge > expires,
+	 *              which is useful for store implementation. If no maxAge and expires, ttl is *Infinity*.
+	 *            But can also be calculated independently in the store by referring to the `storeData.cookie`.
+	 *
+	 * @returns Promise fulfilled with undefined
+	 */
+	set(id: string, storeData: SessionStoreData, ttl: number): Promise<void>;
+	/**
+	 * Deletes a session from the store.
+	 * @param id The session ID
+	 * @returns Promise fulfilled with undefined
+	 */
+	destroy(id: string): Promise<void>;
+	/**
+	 * Update expiration with ttl.
+	 * @param id The session ID
+	 * @param ttl Time to live in milliseconds.
+	 * @returns Promise fulfilled with undefined
+	 */
+	touch(id: string, ttl: number): Promise<void>;
+}
+```
+
+</details>
+
+For an example implementation view the [_MemoryStore_](https://github.com/yutak23/svelte-kit-session/blob/main/src/lib/memory-store.ts).
 
 ## Compatible Session Stores
 

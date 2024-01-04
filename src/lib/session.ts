@@ -129,22 +129,37 @@ export default class Session {
 	 */
 	#storeTtlMs: number;
 
+	/**
+	 * Session ID.
+	 */
 	get id(): string {
 		return this.#id;
 	}
 
+	/**
+	 * Session cookie name.
+	 */
 	get cookieName(): string {
 		return this.#cookieName;
 	}
 
+	/**
+	 * Session cookie options.
+	 */
 	get cookie(): CookieSerializeOptions & { path: string } {
 		return this.#cookie;
 	}
 
+	/**
+	 * Session data.
+	 */
 	get data(): SessionData {
 		return this.#data;
 	}
 
+	/**
+	 * Session store instance.
+	 */
 	get store(): Store {
 		return this.#sessionOptions.store;
 	}
