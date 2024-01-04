@@ -206,6 +206,52 @@ Promise\<void\>
 
 #### session.save()
 
+Save the session (save session to store) and set cookie.
+
+##### arguments
+
+_nothing_
+
+##### return
+
+Promise\<void\>
+
+#### session.regenerate()
+
+Regenerate the session simply invoke the method. Once complete, a new Session and `Session` instance will be initialized.
+
+##### arguments
+
+_nothing_
+
+##### return
+
+Promise\<void\>
+
+#### session.destroy()
+
+Destroy the session.
+
+##### arguments
+
+_nothing_
+
+##### return
+
+Promise\<void\>
+
+### Property(class fields)
+
+A summary of the `event.locals.session` class fields is as follows.
+
+| Name       | Type                                                                                                       | Description                                                                                            |
+| ---------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| id         | string                                                                                                     | Session ID.                                                                                            |
+| cookieName | string                                                                                                     | Session cookie name. The value of `options.name`.                                                      |
+| cookie     | [CookieSerializeOptions](https://github.com/jshttp/cookie?tab=readme-ov-file#options-1) & { path: string } | Session cookie options. The value of `options.cookie`.                                                 |
+| data       | [SessionData](#typing-your-session-data)                                                                   | Session data. Data stored in the session can be referenced from this property.                         |
+| store      | [Store](#session-store-implementation)                                                                     | Session store instance. If you want to manipulate the store directly, you can use this store property. |
+
 ### Options
 
 A summary of the `options` is as follows.
