@@ -19,11 +19,11 @@
 ## Installation
 
 ```console
-$ npm i svelte-kit-session
+$ npm i svelte-kit-sessions
 
-$ yarn add svelte-kit-session
+$ yarn add svelte-kit-sessions
 
-$ pnpm add svelte-kit-session
+$ pnpm add svelte-kit-sessions
 ```
 
 ## Usage
@@ -31,7 +31,7 @@ $ pnpm add svelte-kit-session
 ```ts
 // src/hooks.server.ts
 import type { Handle } from '@sveltejs/kit';
-import { sveltekitSessionHandle } from 'svelte-kit-session';
+import { sveltekitSessionHandle } from 'svelte-kit-sessions';
 
 export const handle: Handle = sveltekitSessionHandle({ secret: 'secret' });
 ```
@@ -42,7 +42,7 @@ or if you want to use it with your own handle, you can use [sequence](https://ki
 // src/hooks.server.ts
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
-import { sveltekitSessionHandle } from 'svelte-kit-session';
+import { sveltekitSessionHandle } from 'svelte-kit-sessions';
 
 const yourOwnHandle: Handle = async ({ event, resolve }) => {
 	// `event.locals.session` is available
@@ -61,7 +61,7 @@ After the above implementation, you can use the following in Actions and API rou
 ```ts
 // src/routes/login/+page.server.ts
 import type { ServerLoad, Actions } from '@sveltejs/kit';
-import type Session from 'svelte-kit-session';
+import type Session from 'svelte-kit-sessions';
 import db from '$lib/server/db.ts';
 
 export const load: ServerLoad = async ({ locals }) => {
@@ -93,7 +93,7 @@ export const actions: Actions = {
 ```ts
 // src/routes/api/todo/+server.ts
 import { json, type RequestEvent, type RequestHandler } from '@sveltejs/kit';
-import type Session from 'svelte-kit-session';
+import type Session from 'svelte-kit-sessions';
 import db from '$lib/server/db.ts';
 
 interface TodoBody {
@@ -117,7 +117,7 @@ You can use [declaration merging](https://www.typescriptlang.org/docs/handbook/d
 
 ```ts
 // src/hooks.server.ts
-declare module 'svelte-kit-session' {
+declare module 'svelte-kit-sessions' {
 	interface SessionData {
 		userId: string;
 		name: string;
@@ -133,7 +133,7 @@ declare module 'svelte-kit-session' {
 
 ```js
 // src/hooks.server.js
-import { sveltekitSessionHandle } from 'svelte-kit-session';
+import { sveltekitSessionHandle } from 'svelte-kit-sessions';
 
 export const handle = sveltekitSessionHandle({ secret: 'secret' });
 ```
@@ -143,7 +143,7 @@ or if you want to use it with your own handle, you can use [sequence](https://ki
 ```js
 // src/hooks.server.js
 import { sequence } from '@sveltejs/kit/hooks';
-import { sveltekitSessionHandle } from 'svelte-kit-session';
+import { sveltekitSessionHandle } from 'svelte-kit-sessions';
 
 const yourOwnHandle = async ({ event, resolve }) => {
 	// `event.locals.session` is available
@@ -160,7 +160,7 @@ export const handle = sequence(sveltekitSessionHandle({ secret: 'secret' }), you
 ## API
 
 ```ts
-import { sveltekitSessionHandle } from 'svelte-kit-session';
+import { sveltekitSessionHandle } from 'svelte-kit-sessions';
 
 sveltekitSessionHandle(options);
 ```
@@ -264,7 +264,7 @@ A summary of the `options` is as follows.
 | name              | string                                                                                  | _optional_        | The name of the session ID cookie to set in the response. The default value is 'connect.sid'.                                                                |
 | cookie            | [CookieSerializeOptions](https://github.com/jshttp/cookie?tab=readme-ov-file#options-1) | _optional_        | Cookie settings object. See [link](https://github.com/jshttp/cookie?tab=readme-ov-file#options-1) for details.                                               |
 | rolling           | boolean                                                                                 | _optional_        | Force the session identifier cookie to be set on every response. The default value is `false`. If `cookie.maxAge` is not set, this option is ignored.        |
-| store             | [Store](https://github.com/yutak23/svelte-kit-session/blob/main/src/lib/index.ts#L120)  | _optional_        | The session store instance. The default value is new `MemoryStore` instance.                                                                                 |
+| store             | [Store](https://github.com/yutak23/svelte-kit-sessions/blob/main/src/lib/index.ts#L120) | _optional_        | The session store instance. The default value is new `MemoryStore` instance.                                                                                 |
 | secret            | string                                                                                  | _required_        | This is the secret used to sign the session cookie.                                                                                                          |
 | saveUninitialized | boolean                                                                                 | _optional_        | Forces a session that is "uninitialized" to be saved to the store. A session is uninitialized when it is new but not modified. The default value is `false`. |
 
@@ -395,12 +395,12 @@ Choosing `false` is useful for implementing login sessions, reducing server stor
 
 Every session store _must_ be implement specific methods.
 
-| method  | Arguments                                                                                                                                                                                                                                                                                                                                | Description                            |
-| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| get     | 1. id (string) : session ID                                                                                                                                                                                                                                                                                                              | Returns JSON data stored in the store. |
-| set     | 1. id (string) : session ID<br> 2. storeData ([SessionStoreData](https://github.com/yutak23/svelte-kit-session/blob/main/src/lib/index.ts#L108)) : JSON data to be stored in the store<br> 3. ttl (number) : ttl milliseconds calculated from cookie options expires, maxAge(if neither is set, the ttl value passed will be _Infinity_) | Stores JSON data in the store.         |
-| destroy | 1. id (string) : session ID                                                                                                                                                                                                                                                                                                              | Deletes a session from the store.      |
-| touch   | 1. id (string) : session ID<br> 2. ttl (number) : ttl milliseconds calculated from cookie options expires, maxAge(if neither is set, the ttl value passed will be _Infinity_)                                                                                                                                                            | Update expiration with ttl.            |
+| method  | Arguments                                                                                                                                                                                                                                                                                                                                 | Description                            |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| get     | 1. id (string) : session ID                                                                                                                                                                                                                                                                                                               | Returns JSON data stored in the store. |
+| set     | 1. id (string) : session ID<br> 2. storeData ([SessionStoreData](https://github.com/yutak23/svelte-kit-sessions/blob/main/src/lib/index.ts#L108)) : JSON data to be stored in the store<br> 3. ttl (number) : ttl milliseconds calculated from cookie options expires, maxAge(if neither is set, the ttl value passed will be _Infinity_) | Stores JSON data in the store.         |
+| destroy | 1. id (string) : session ID                                                                                                                                                                                                                                                                                                               | Deletes a session from the store.      |
+| touch   | 1. id (string) : session ID<br> 2. ttl (number) : ttl milliseconds calculated from cookie options expires, maxAge(if neither is set, the ttl value passed will be _Infinity_)                                                                                                                                                             | Update expiration with ttl.            |
 
 <details>
 
@@ -450,7 +450,7 @@ interface Store {
 
 </details>
 
-For an example implementation view the [_MemoryStore_](https://github.com/yutak23/svelte-kit-session/blob/main/src/lib/memory-store.ts).
+For an example implementation view the [_MemoryStore_](https://github.com/yutak23/svelte-kit-sessions/blob/main/src/lib/memory-store.ts).
 
 ## Compatible Session Stores
 
