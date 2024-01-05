@@ -460,6 +460,11 @@ For an example implementation view the [_MemoryStore_](https://github.com/yutak2
 [svelte-kit-connect-redis-url]: https://www.npmjs.com/package/svelte-kit-connect-redis
 [svelte-kit-connect-redis-image]: https://badgen.net/github/stars/yutak23/svelte-kit-connect-redis?label=%E2%98%85
 
+- [![★][svelte-kit-connect-upstash-redis-image] svelte-kit-connect-upstash-redis][svelte-kit-connect-upstash-redis-url] A Upstash/Redis-based session store. This can also be used in edge environments such as Cloudflare Pages Functions(Cloudflare Workers).
+
+[svelte-kit-connect-upstash-redis-url]: https://www.npmjs.com/package/svelte-kit-connect-upstash-redis
+[svelte-kit-connect-upstash-redis-image]: https://badgen.net/github/stars/yutak23/svelte-kit-connect-upstash-redis?label=%E2%98%85
+
 _Currently under development and a few stores available at this time. You can implement your own store by referring to the chapter [Session Store Implementation](#session-store-implementation)._
 
 ## Contributing
