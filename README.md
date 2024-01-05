@@ -61,25 +61,24 @@ After the above implementation, you can use the following in Actions and API rou
 ```ts
 // src/routes/login/+page.server.ts
 import type { ServerLoad, Actions } from '@sveltejs/kit';
-import type Session from 'svelte-kit-sessions';
 import db from '$lib/server/db.ts';
 
 export const load: ServerLoad = async ({ locals }) => {
-	const session: Session = locals; // you can access `locals.session`
+	const { session } = locals; // you can access `locals.session`
 	const user = await db.getUserFromId(session.data.userId);
 	return { user };
 };
 
 export const actions: Actions = {
 	login: async ({ request, locals }) => {
-		const session: Session = locals; // you can access `locals.session`
+		const { session } = locals; // you can access `locals.session`
 
 		const data = await request.formData();
 		const email = data.get('email');
 		const password = data.get('password');
 		const user = await db.getUser(email, password);
 
-		await session.setData({ id: user.id, name: user.name }); // set data to session
+		await session.setData({ userId: user.id, name: user.name }); // set data to session
 		await session.save(); // session saveand session create(session data is stored and set-cookie)
 
 		return { success: true };
@@ -93,7 +92,6 @@ export const actions: Actions = {
 ```ts
 // src/routes/api/todo/+server.ts
 import { json, type RequestEvent, type RequestHandler } from '@sveltejs/kit';
-import type Session from 'svelte-kit-sessions';
 import db from '$lib/server/db.ts';
 
 interface TodoBody {
@@ -102,7 +100,7 @@ interface TodoBody {
 }
 
 export const POST: RequestHandler = async (event: RequestEvent) => {
-	const session: Session = event.locals; // you can access `locals.session`
+	const { session } = locals; // you can access `locals.session`
 
 	const { title, memo } = (await event.request.json()) as TodoBody;
 	const todoId = await db.createTodo({ title, memo, userId: session.data.userId });

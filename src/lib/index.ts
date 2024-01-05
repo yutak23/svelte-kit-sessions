@@ -164,4 +164,4 @@ const sveltekitSessionHandle =
 		return response;
 	};
 
-export { sveltekitSessionHandle, MemoryStore };
+export { sveltekitSessionHandle, MemoryStore, Session };
