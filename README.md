@@ -1,20 +1,20 @@
 # svelte-kit-sessions
 
+**svelte-kit-sessions** is a module for easy and efficient session management in SvelteKit.
+
 [![npm](https://img.shields.io/npm/v/svelte-kit-sessions.svg)](https://www.npmjs.com/package/svelte-kit-sessions)
 [![unit test](https://github.com/yutak23/svelte-kit-sessions/actions/workflows/unit-test.yaml/badge.svg)](https://github.com/yutak23/svelte-kit-sessions/actions/workflows/unit-test.yaml)
 [![integration test](https://github.com/yutak23/svelte-kit-sessions/actions/workflows/integration-test.yaml/badge.svg)](https://github.com/yutak23/svelte-kit-sessions/actions/workflows/integration-test.yaml)
 ![style](https://img.shields.io/badge/code%20style-airbnb-ff5a5f.svg)
 
-**Svelte Kit Sessions** is a module for easy and efficient session management in SvelteKit.
-
 ## Features
 
 - **Simple session management module**  
-  Svelte Kit Sessions is designed to be simple enough to be used in a variety of use cases, including a pattern in which sessions are paid out after authentication by the user's own application, or after authentication using OpenID Connect.
+  svelte-kit-sessions is designed to be simple enough to be used in a variety of use cases, including a pattern in which sessions are paid out after authentication by the user's own application, or after authentication using OpenID Connect.
 - **Customizable Store**  
   In addition to the default MemoryStore, various other stores such as Redis and Cloudflare KV are available
 - **Also available in edge environments**  
-  Svelte Kit Sessions also supports use in the Edge environment such as Cloudflare Pages Functions(Cloudflare Workers).
+  svelte-kit-sessions also supports use in the Edge environment such as Cloudflare Pages Functions(Cloudflare Workers).
 
 ## Installation
 
@@ -276,7 +276,7 @@ The name of the session ID cookie to set in the response (and read from in the r
 
 Cookie settings object. Exactly the same options that can be specified in `cookie.serialize` of the [cookie npm package](https://www.npmjs.com/package/cookie).
 
-**Note** The default value of the cookie matches the behavior of SvelteKit. For more details, please check https://kit.svelte.dev/docs/types#public-types-cookies. However, for the `cookie.path`, it is implemented so that `/` is set on the Svelte Kit Sessions side.
+**Note** The default value of the cookie matches the behavior of SvelteKit. For more details, please check https://kit.svelte.dev/docs/types#public-types-cookies. However, for the `cookie.path`, it is implemented so that `/` is set on the svelte-kit-sessions side.
 
 The following are options that can be set in this object.
 
@@ -412,7 +412,7 @@ Every session store _must_ be implement specific methods.
  * MemoryStore would be helpful.
  * @see MemoryStore
  */
-interface Store {
+export interface Store {
 	/**
 	 * Returns JSON data stored in the store.
 	 * @param id The session ID
@@ -452,7 +452,12 @@ For an example implementation view the [_MemoryStore_](https://github.com/yutak2
 
 ## Compatible Session Stores
 
-_Currently under development and no stores available at this time. You can implement your own store by referring to the chapter [Session Store Implementation](#session-store-implementation)._
+- [![★][svelte-kit-connect-redis-image] svelte-kit-connect-redis][svelte-kit-connect-redis-url] A Redis-based session store.
+
+[svelte-kit-connect-redis-url]: https://www.npmjs.com/package/svelte-kit-svelte-kit-connect-redis
+[svelte-kit-connect-redis-image]: https://badgen.net/github/stars/yutak23/svelte-kit-connect-redis?label=%E2%98%85
+
+_Currently under development and a few stores available at this time. You can implement your own store by referring to the chapter [Session Store Implementation](#session-store-implementation)._
 
 ## Contributing
 
