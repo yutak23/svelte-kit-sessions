@@ -1,6 +1,8 @@
 # svelte-kit-sessions
 
-**svelte-kit-sessions** is a module for easy and efficient session management in SvelteKit.
+**svelte-kit-sessions** is intuitive session management module. Effortlessly integrate efficient session handling into your projects.
+
+Session is stored in the KVS store (Redis, Cloudflare KV, etc.), not in a cookie.
 
 [![npm](https://img.shields.io/npm/v/svelte-kit-sessions.svg)](https://www.npmjs.com/package/svelte-kit-sessions)
 [![unit test](https://github.com/yutak23/svelte-kit-sessions/actions/workflows/unit-test.yaml/badge.svg)](https://github.com/yutak23/svelte-kit-sessions/actions/workflows/unit-test.yaml)
@@ -9,12 +11,14 @@
 
 ## Features
 
-- **Simple session management module**  
-  svelte-kit-sessions is designed to be simple enough to be used in a variety of use cases, including a pattern in which sessions are paid out after authentication by the user's own application, or after authentication using OpenID Connect.
+- **Easy session management**  
+  `svelte-kit-sessions` can be used for a variety of scenarios, including your own authentication or issuing sessions after authentication with OpenID Connect. Designed for flexible use, such as storing user information in sessions or storing JWT.
 - **Customizable Store**  
-  In addition to the default MemoryStore, various other stores such as Redis and Cloudflare KV are available
+  You can choose the best storage for your needs. From the default MemoryStore to versatile options like Redis and Cloudflare KV, you can customize.
 - **Also available in edge environments**  
-  svelte-kit-sessions also supports use in the Edge environment such as Cloudflare Pages Functions(Cloudflare Workers).
+  `svelte-kit-sessions` also supports use in the Edge environment such as Cloudflare Pages Functions(Cloudflare Workers).
+
+Maximize your SvelteKit development with **svelte-kit-sessions** – the smart choice for modern web applications.
 
 ## Installation
 
