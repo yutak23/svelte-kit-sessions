@@ -1,7 +1,7 @@
 {
 	"name": "svelte-kit-sessions",
 	"description": "A easy and efficient session management in SvelteKit",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"author": "yutak23 <yuta.katayama.23+github@gmail.com> (https://github.com/yutak23)",
 	"repository": {
 		"type": "git",

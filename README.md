@@ -1,7 +1,6 @@
 # svelte-kit-sessions
 
-**svelte-kit-sessions** is intuitive session management module. Effortlessly integrate efficient session handling into your projects.
-
+**svelte-kit-sessions** is intuitive session management module. Effortlessly integrate efficient session handling into your projects.  
 Session is stored in the KVS store (Redis, Cloudflare KV, etc.), not in a cookie.
 
 [![npm](https://img.shields.io/npm/v/svelte-kit-sessions.svg)](https://www.npmjs.com/package/svelte-kit-sessions)
