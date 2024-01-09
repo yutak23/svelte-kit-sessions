@@ -6,7 +6,7 @@
 ![style](https://img.shields.io/badge/code%20style-airbnb-ff5a5f.svg)
 
 **svelte-kit-sessions** is user-friendly session management module for Svelte-Kit. Effortlessly integrate efficient session handling into your projects.  
-Session is stored in the KVS store (Redis, Cloudflare KV, etc.), not in a cookie.
+Session is stored in the store (ex. Redis, Cloudflare KV, etc.), not in a cookie.
 
 ## Features
 
@@ -266,7 +266,7 @@ A summary of the `options` is as follows.
 | cookie            | [CookieSerializeOptions](https://github.com/jshttp/cookie?tab=readme-ov-file#options-1) | _optional_        | Cookie settings object. See [link](https://github.com/jshttp/cookie?tab=readme-ov-file#options-1) for details.                                               |
 | rolling           | boolean                                                                                 | _optional_        | Force the session identifier cookie to be set on every response. The default value is `false`. If `cookie.maxAge` is not set, this option is ignored.        |
 | store             | [Store](https://github.com/yutak23/svelte-kit-sessions/blob/main/src/lib/index.ts#L120) | _optional_        | The session store instance. The default value is new `MemoryStore` instance.                                                                                 |
-| secret            | string                                                                                  | _required_        | This is the secret used to sign the session cookie.                                                                                                          |
+| secret            | string \| string[]                                                                      | _required_        | This is the secret used to sign the session cookie.                                                                                                          |
 | saveUninitialized | boolean                                                                                 | _optional_        | Forces a session that is "uninitialized" to be saved to the store. A session is uninitialized when it is new but not modified. The default value is `false`. |
 
 #### name
@@ -374,17 +374,16 @@ The session store instance. The default value is new `MemoryStore` instance.
 
 #### secret
 
-This is the secret used to sign the session cookie.
-The secret itself should be not easily parsed by a human and would best be a random set of characters.
+This is the secret for signing session ID cookies. It can be a string or an array string of secrets.  
+For signing, only the first secret in the array is used; for verification, all secrets are considered.  
+The secret should be a complex, random string, not easily guessed.
 
-Best practices may include:
+Best practices include:
 
-- The use of environment variables to store the secret, ensuring the secret itself does not exist in your repository.
-- Periodic updates of the secret.
+- Storing the secret in environment variables, not in your repository
+- Regularly updating the secret and keeping old ones in the array
 
-Using a secret that cannot be guessed will reduce the ability to hijack a session to only guessing the session ID.
-
-Changing the secret value will invalidate all existing sessions.
+To change the secret without invalidating existing sessions, add the new secret as the first element in the array and include the old ones after it.
 
 #### saveUninitialized
 

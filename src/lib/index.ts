@@ -59,18 +59,19 @@ export interface SveltekitSessionConfig {
 	store?: Store;
 
 	/**
-	 * This is the secret used to sign the session cookie.
-	 * The secret itself should be not easily parsed by a human and would best be a random set of characters.
+	 * This is the secret for signing session ID cookies.
+	 * It can be a string or an array string of secrets.
+	 * For signing, only the first secret in the array is used; for verification, all secrets are considered.
+	 * The secret should be a complex, random string, not easily guessed.
+	 * Best practices include:
 	 *
-	 * Best practices may include:
-	 * - The use of environment variables to store the secret, ensuring the secret itself does not exist in your repository.
-	 * - Periodic updates of the secret.
+	 *   - Storing the secret in environment variables, not in your repository
+	 *   - Regularly updating the secret and keeping old ones in the array
 	 *
-	 * Using a secret that cannot be guessed will reduce the ability to hijack a session to only guessing the session ID.
-	 *
-	 * Changing the secret value will invalidate all existing sessions.
+	 * To change the secret without invalidating existing sessions,
+	 *   add the new secret as the first element in the array and include the old ones after it.
 	 */
-	secret: string;
+	secret: string | string[];
 
 	/**
 	 * Forces a session that is "uninitialized" to be saved to the store. A session is uninitialized when it is new but not modified.
