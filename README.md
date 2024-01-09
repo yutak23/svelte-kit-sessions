@@ -385,6 +385,20 @@ Forces a session that is "uninitialized" to be saved to the store. A session is 
 
 Choosing `false` is useful for implementing login sessions, reducing server storage usage, or complying with laws that require permission before setting a cookie. Choosing `false` will also help with race conditions where a client makes multiple parallel requests without a session.
 
+## Compatible Session Stores
+
+- [![★][svelte-kit-connect-redis-image] svelte-kit-connect-redis][svelte-kit-connect-redis-url] A Redis-based session store.
+
+[svelte-kit-connect-redis-url]: https://www.npmjs.com/package/svelte-kit-connect-redis
+[svelte-kit-connect-redis-image]: https://badgen.net/github/stars/yutak23/svelte-kit-connect-redis?label=%E2%98%85
+
+- [![★][svelte-kit-connect-upstash-redis-image] svelte-kit-connect-upstash-redis][svelte-kit-connect-upstash-redis-url] A Upstash/Redis-based session store. This can also be used in edge environments such as Cloudflare Pages Functions(Cloudflare Workers).
+
+[svelte-kit-connect-upstash-redis-url]: https://www.npmjs.com/package/svelte-kit-connect-upstash-redis
+[svelte-kit-connect-upstash-redis-image]: https://badgen.net/github/stars/yutak23/svelte-kit-connect-upstash-redis?label=%E2%98%85
+
+_Currently under development and a few stores available at this time. You can implement your own store by referring to the chapter [Session Store Implementation](#session-store-implementation)._
+
 ## Session Store Implementation
 
 Every session store _must_ be implement specific methods.
