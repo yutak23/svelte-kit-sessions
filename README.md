@@ -5,19 +5,19 @@
 [![integration test](https://github.com/yutak23/svelte-kit-sessions/actions/workflows/integration-test.yaml/badge.svg)](https://github.com/yutak23/svelte-kit-sessions/actions/workflows/integration-test.yaml)
 ![style](https://img.shields.io/badge/code%20style-airbnb-ff5a5f.svg)
 
-**svelte-kit-sessions** is user-friendly session management module for Svelte-Kit. Effortlessly integrate efficient session handling into your projects.  
+**svelte-kit-sessions** is user-friendly session management module for SvelteKit. Effortlessly integrate efficient session handling into your projects.  
 Session is stored in the store (ex. Redis, Cloudflare KV, etc.), not in a cookie.
 
 ## Features
 
-- **Easy session management**  
-  `svelte-kit-sessions` can be used for a variety of scenarios, including your own authentication or issuing sessions after authentication with OpenID Connect. Designed for flexible use, such as storing user information in sessions or storing JWT.
-- **Customizable Store**  
-  You can choose the best storage for your needs. From the default MemoryStore to versatile options like Redis and Cloudflare KV, you can customize.
-- **Also available in edge environments**  
-  `svelte-kit-sessions` also supports use in the Edge environment such as Cloudflare Pages Functions(Cloudflare Workers).
+- **Easy Session Management:**  
+  Use `svelte-kit-sessions` for various scenarios, including authentication and issuing sessions with OpenID Connect. It's flexible, allowing user info storage in sessions or using JWTs.
+- **Customizable Store:**  
+  Choose the ideal storage for your needs. Options range from the default MemoryStore to Redis and Cloudflare KV.
+- **Edge Environment Support:**  
+  `svelte-kit-sessions` is compatible with Edge environments like Cloudflare Pages Functions (Cloudflare Workers).
 
-Maximize your SvelteKit development with **svelte-kit-sessions** – the smart choice for modern web applications.
+Enhance your SvelteKit development with **svelte-kit-sessions**, the ideal solution for modern web apps.
 
 ## Installation
 
@@ -170,15 +170,9 @@ sveltekitSessionHandle(options);
 
 Create a server hooks handle with the given `options`. This allows access to `event.locals.session` in hooks handles, Actions and API route.
 
-**Note** Session data is _not_ saved in the cookie itself, just the session ID.
-Session data is stored server-side.
+**Note** Session data is _not_ saved in the cookie itself, just the session ID. Session data is stored server-side.
 
-**Warning** The default server-side session storage, `MemoryStore`, is _purposely_
-not designed for a production environment. It will leak memory under most
-conditions, does not scale past a single process, and is meant for debugging and
-developing.
-
-For a list of stores, see [Compatible Session Stores](#compatible-session-stores).
+**Warning:** The default `MemoryStore` for server-side sessions is not suitable for production. It tends to leak memory, can't scale beyond a single process, and is only for debugging and development. For production-ready stores, see the list of [Compatible Session Stores](#compatible-session-stores).
 
 ### Apis(class methods)
 
@@ -262,16 +256,16 @@ A summary of the `options` is as follows.
 
 | Name              | Type                                                                                    | required/optional | Description                                                                                                                                                  |
 | ----------------- | --------------------------------------------------------------------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| name              | string                                                                                  | _optional_        | The name of the session ID cookie to set in the response. The default value is 'connect.sid'.                                                                |
+| name              | string                                                                                  | _optional_        | The name of the session ID cookie to set in the response. The default value is `connect.sid`.                                                                |
 | cookie            | [CookieSerializeOptions](https://github.com/jshttp/cookie?tab=readme-ov-file#options-1) | _optional_        | Cookie settings object. See [link](https://github.com/jshttp/cookie?tab=readme-ov-file#options-1) for details.                                               |
 | rolling           | boolean                                                                                 | _optional_        | Force the session identifier cookie to be set on every response. The default value is `false`. If `cookie.maxAge` is not set, this option is ignored.        |
-| store             | [Store](https://github.com/yutak23/svelte-kit-sessions/blob/main/src/lib/index.ts#L120) | _optional_        | The session store instance. The default value is new `MemoryStore` instance.                                                                                 |
+| store             | [Store](https://github.com/yutak23/svelte-kit-sessions/blob/main/src/lib/index.ts#L120) | _optional_        | The session store instance. The default value is `MemoryStore` instance.                                                                                     |
 | secret            | string \| string[]                                                                      | _required_        | This is the secret used to sign the session cookie.                                                                                                          |
 | saveUninitialized | boolean                                                                                 | _optional_        | Forces a session that is "uninitialized" to be saved to the store. A session is uninitialized when it is new but not modified. The default value is `false`. |
 
 #### name
 
-The name of the session ID cookie to set in the response (and read from in the request). The default value is 'connect.sid'.
+The name of the session ID cookie to set in the response (and read from in the request). The default value is `connect.sid`.
 
 **Note** If you have multiple apps running on the same hostname (this is just the name, i.e. `localhost` or `127.0.0.1`; different schemes and ports do not name a different hostname), then you need to separate the session cookies from each other. The simplest method is to simply set different names per app.
 
@@ -451,20 +445,6 @@ export interface Store {
 </details>
 
 For an example implementation view the [_MemoryStore_](https://github.com/yutak23/svelte-kit-sessions/blob/main/src/lib/memory-store.ts).
-
-## Compatible Session Stores
-
-- [![★][svelte-kit-connect-redis-image] svelte-kit-connect-redis][svelte-kit-connect-redis-url] A Redis-based session store.
-
-[svelte-kit-connect-redis-url]: https://www.npmjs.com/package/svelte-kit-connect-redis
-[svelte-kit-connect-redis-image]: https://badgen.net/github/stars/yutak23/svelte-kit-connect-redis?label=%E2%98%85
-
-- [![★][svelte-kit-connect-upstash-redis-image] svelte-kit-connect-upstash-redis][svelte-kit-connect-upstash-redis-url] A Upstash/Redis-based session store. This can also be used in edge environments such as Cloudflare Pages Functions(Cloudflare Workers).
-
-[svelte-kit-connect-upstash-redis-url]: https://www.npmjs.com/package/svelte-kit-connect-upstash-redis
-[svelte-kit-connect-upstash-redis-image]: https://badgen.net/github/stars/yutak23/svelte-kit-connect-upstash-redis?label=%E2%98%85
-
-_Currently under development and a few stores available at this time. You can implement your own store by referring to the chapter [Session Store Implementation](#session-store-implementation)._
 
 ## Contributing
 
