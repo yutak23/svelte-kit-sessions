@@ -387,7 +387,7 @@ Choosing `false` is useful for implementing login sessions, reducing server stor
 
 ## Compatible Session Stores
 
-- [![★][svelte-kit-connect-redis-image] svelte-kit-connect-redis][svelte-kit-connect-redis-url] A Redis-based session store.
+- [![★][svelte-kit-connect-redis-image] svelte-kit-connect-redis][svelte-kit-connect-redis-url] A Redis-based session store. **Note**: Not available in the Edge environment (At least in Cloudflare Workers).
 
 [svelte-kit-connect-redis-url]: https://www.npmjs.com/package/svelte-kit-connect-redis
 [svelte-kit-connect-redis-image]: https://badgen.net/github/stars/yutak23/svelte-kit-connect-redis?label=%E2%98%85
