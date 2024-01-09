@@ -32,7 +32,8 @@
 		"dist"
 	],
 	"peerDependencies": {
-		"svelte": "^4.0.0"
+		"svelte": "^4.0.0",
+		"@sveltejs/kit": "^1.0.0 || ^2.0.0"
 	},
 	"dependencies": {
 		"@isaacs/ttlcache": "^1.4.1"
