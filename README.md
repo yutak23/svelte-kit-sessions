@@ -31,12 +31,24 @@ $ pnpm add svelte-kit-sessions
 
 ## Usage
 
+`svelte-kit-sessions` stores session data in a store, so a store is need (Store is optional and defaults to [_MemoryStore_](https://github.com/yutak23/svelte-kit-sessions/blob/main/src/lib/memory-store.ts) if omitted). You can find a list of compatible stores at [Compatible Session Stores](#compatible-session-stores).
+
 ```ts
 // src/hooks.server.ts
 import type { Handle } from '@sveltejs/kit';
 import { sveltekitSessionHandle } from 'svelte-kit-sessions';
+import RedisStore from 'svelte-kit-connect-redis';
+import { Redis } from 'ioredis';
 
-export const handle: Handle = sveltekitSessionHandle({ secret: 'secret' });
+const client = new Redis({
+	host: '{your redis host}',
+	port: 6379
+});
+
+export const handle: Handle = sveltekitSessionHandle({
+	secret: 'secret',
+	store: new RedisStore({ client }) // other compatible stores are available
+});
 ```
 
 or if you want to use it with your own handle, you can use [sequence](https://kit.svelte.dev/docs/modules#sveltejs-kit-hooks-sequence).
@@ -46,6 +58,13 @@ or if you want to use it with your own handle, you can use [sequence](https://ki
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { sveltekitSessionHandle } from 'svelte-kit-sessions';
+import RedisStore from 'svelte-kit-connect-redis';
+import { Redis } from 'ioredis';
+
+const client = new Redis({
+	host: '{your redis host}',
+	port: 6379
+});
 
 const yourOwnHandle: Handle = async ({ event, resolve }) => {
 	// `event.locals.session` is available
@@ -54,7 +73,10 @@ const yourOwnHandle: Handle = async ({ event, resolve }) => {
 	return result;
 };
 
-export const handle: Handle = sequence(sveltekitSessionHandle({ secret: 'secret' }), yourOwnHandle);
+export const handle: Handle = sequence(
+	sveltekitSessionHandle({ secret: 'secret', store: new RedisStore({ client }) }),
+	yourOwnHandle
+);
 ```
 
 After the above implementation, you can use the following in Actions and API routes.
@@ -259,7 +281,7 @@ A summary of the `options` is as follows.
 | name              | string                                                                                  | _optional_        | The name of the session ID cookie to set in the response. The default value is `connect.sid`.                                                                |
 | cookie            | [CookieSerializeOptions](https://github.com/jshttp/cookie?tab=readme-ov-file#options-1) | _optional_        | Cookie settings object. See [link](https://github.com/jshttp/cookie?tab=readme-ov-file#options-1) for details.                                               |
 | rolling           | boolean                                                                                 | _optional_        | Force the session identifier cookie to be set on every response. The default value is `false`. If `cookie.maxAge` is not set, this option is ignored.        |
-| store             | [Store](https://github.com/yutak23/svelte-kit-sessions/blob/main/src/lib/index.ts#L120) | _optional_        | The session store instance. The default value is `MemoryStore` instance.                                                                                     |
+| store             | [Store](https://github.com/yutak23/svelte-kit-sessions/blob/main/src/lib/index.ts#L120) | _optional_        | The session store instance. The default value is [_MemoryStore_](https://github.com/yutak23/svelte-kit-sessions/blob/main/src/lib/memory-store.ts) instance. |
 | secret            | string \| string[]                                                                      | _required_        | This is the secret used to sign the session cookie.                                                                                                          |
 | saveUninitialized | boolean                                                                                 | _optional_        | Forces a session that is "uninitialized" to be saved to the store. A session is uninitialized when it is new but not modified. The default value is `false`. |
 
@@ -362,7 +384,7 @@ This option only modifies the behavior when an existing session was loaded for t
 
 #### store
 
-The session store instance. The default value is new `MemoryStore` instance.
+The session store instance. The default value is `MemoryStore` instance.
 
 **Note** See the chapter [Session Store Implementation](#session-store-implementation) for more information on the store.
 
