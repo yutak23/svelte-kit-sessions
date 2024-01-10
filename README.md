@@ -387,17 +387,22 @@ Choosing `false` is useful for implementing login sessions, reducing server stor
 
 ## Compatible Session Stores
 
-- [![★][svelte-kit-connect-redis-image] svelte-kit-connect-redis][svelte-kit-connect-redis-url] A Redis-based session store. **Note**: Not available in the Edge environment (At least in Cloudflare Workers).
+- [![★][svelte-kit-connect-redis-image] svelte-kit-connect-redis][svelte-kit-connect-redis-url] A Redis based session store. **Note**: Not available in the Edge environment (At least in Cloudflare Workers).
 
 [svelte-kit-connect-redis-url]: https://www.npmjs.com/package/svelte-kit-connect-redis
 [svelte-kit-connect-redis-image]: https://badgen.net/github/stars/yutak23/svelte-kit-connect-redis?label=%E2%98%85
 
-- [![★][svelte-kit-connect-upstash-redis-image] svelte-kit-connect-upstash-redis][svelte-kit-connect-upstash-redis-url] A Upstash/Redis-based session store. This can also be used in edge environments such as Cloudflare Pages Functions(Cloudflare Workers).
+- [![★][svelte-kit-connect-upstash-redis-image] svelte-kit-connect-upstash-redis][svelte-kit-connect-upstash-redis-url] A Upstash Redis based session store. This can also be used in edge environments such as Cloudflare Pages Functions(Cloudflare Workers).
 
 [svelte-kit-connect-upstash-redis-url]: https://www.npmjs.com/package/svelte-kit-connect-upstash-redis
 [svelte-kit-connect-upstash-redis-image]: https://badgen.net/github/stars/yutak23/svelte-kit-connect-upstash-redis?label=%E2%98%85
 
-_Currently under development and a few stores available at this time. You can implement your own store by referring to the chapter [Session Store Implementation](#session-store-implementation)._
+- [![★][svelte-kit-connect-cloudflare-kv-image] svelte-kit-connect-cloudflare-kv][svelte-kit-connect-cloudflare-kv-url] A Cloudflare Workers KV based session store. This only can be used in Cloudflare Pages Functions(Cloudflare Workers).
+
+[svelte-kit-connect-cloudflare-kv-url]: https://www.npmjs.com/package/svelte-kit-connect-cloudflare-kv
+[svelte-kit-connect-cloudflare-kv-image]: https://badgen.net/github/stars/yutak23/svelte-kit-connect-cloudflare-kv?label=%E2%98%85
+
+_You can implement your own store by referring to the chapter [Session Store Implementation](#session-store-implementation)._
 
 ## Session Store Implementation
 
@@ -469,6 +474,7 @@ our [Contributing Guide](./CONTRIBUTING.md).
 
 [MIT licensed](./LICENSE)
 
+[rfc-west-cookie-priority-00-4.1]: https://tools.ietf.org/html/draft-west-cookie-priority-00#section-4.1
 [rfc-6265bis-09-5.4.7]: https://tools.ietf.org/html/draft-ietf-httpbis-rfc6265bis-09#section-5.4.7
 [rfc-6265]: https://tools.ietf.org/html/rfc6265
 [rfc-6265-5.1.4]: https://tools.ietf.org/html/rfc6265#section-5.1.4
