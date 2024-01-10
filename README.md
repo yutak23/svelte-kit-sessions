@@ -125,7 +125,7 @@ interface TodoBody {
 }
 
 export const POST: RequestHandler = async (event: RequestEvent) => {
-	const { session } = locals; // you can access `locals.session`
+	const { session } = event.locals; // you can access `event.locals.session`
 
 	const { title, memo } = (await event.request.json()) as TodoBody;
 	const todoId = await db.createTodo({ title, memo, userId: session.data.userId });
