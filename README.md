@@ -79,9 +79,11 @@ export const handle: Handle = sequence(
 );
 ```
 
-After the above implementation, you can use the following in Actions and API routes.
+After the above implementation, you can use the following in Actions, API routes and Server hooks(handle).
 
 ### Actions
+
+For example, "authenticate the user and create a session".
 
 ```ts
 // src/routes/login/+page.server.ts
@@ -114,6 +116,8 @@ export const actions: Actions = {
 
 ### API route
 
+For example, "when creating a TODO with a user who has a session, create the TODO with the session's userId as the creator of the TODO".
+
 ```ts
 // src/routes/api/todo/+server.ts
 import { json, type RequestEvent, type RequestHandler } from '@sveltejs/kit';
@@ -133,6 +137,95 @@ export const POST: RequestHandler = async (event: RequestEvent) => {
 	return json({ id: todoId }, { status: 200 });
 };
 ```
+
+### Server hooks(handle)
+
+For example, "redirect to login if access does _not_ have a session after authentication".
+
+```ts
+// src/hooks.server.ts
+import { redirect, type Handle } from '@sveltejs/kit';
+import { sequence } from '@sveltejs/kit/hooks';
+import { sveltekitSessionHandle } from 'svelte-kit-sessions';
+import RedisStore from 'svelte-kit-connect-redis';
+import { Redis } from 'ioredis';
+
+const client = new Redis({
+	host: '{your redis host}',
+	port: 6379
+});
+
+const checkAuthorizationHandle: Handle = async ({ event, resolve }) => {
+	// `event.locals.session` is available
+	if (!event.locals.session.data.userId) throw redirect(302, '/login');
+
+	const result = await resolve(event);
+	return result;
+};
+
+// make sure to set sveltekitSessionHandle first
+export const handle: Handle = sequence(
+	sveltekitSessionHandle({ secret: 'secret', store: new RedisStore({ client }) }),
+	checkAuthorizationHandle
+);
+```
+
+<details>
+
+<summary>For example, "authenticate with OpenID Connect and create a session".</summary>
+
+**Note** The below is a sample code implementation of Authorization Code Flow in `hooks.server.ts`, but in practice, it should be cut out properly in API Rotes, etc.
+
+```ts
+// src/hooks.server.ts
+import { redirect, type Handle } from '@sveltejs/kit';
+import { sequence } from '@sveltejs/kit/hooks';
+import { sveltekitSessionHandle } from 'svelte-kit-sessions';
+import RedisStore from 'svelte-kit-connect-redis';
+import { Redis } from 'ioredis';
+import oauthClient from '$lib/server/oauth-client.js'; // Be a library for OpenID Connect (OAuth2.0)
+
+const client = new Redis({
+	host: '{your redis host}',
+	port: 6379
+});
+
+const checkAuthHandle: Handle = async ({ event, resolve }) => {
+	// Callback endpoints, use temporary tokens to get ID tokens, etc.
+	if (event.url.pathname === '/oauth/callback' && event.request.method === 'GET') {
+		if (event.locals.session.data.state !== event.params.state) throw new Error('Invalid state.');
+
+		const data = await oauthClient.callback({
+			request: event.request,
+			state: event.locals.session.data.state,
+			codeVerifier: event.locals.session.data.codeVerifier
+		});
+
+		const newSession = await session.regenerate();
+		await newSession.setData({ userId: data.sub, email: data.email, name: data.name });
+		await newSession.save();
+		throw redirect(302, '/');
+	}
+
+	// Start Authorization Code Flow with no session
+	if (!event.locals.session.data.userId) {
+		const { authUri, state, codeVerifier } = oauthClient.start();
+		await event.locals.session.setData({ state, codeVerifier });
+		await event.locals.session.save();
+		throw redirect(302, authUri);
+	}
+
+	const result = await resolve(event);
+	return result;
+};
+
+export const handle: Handle = sequence(
+	sveltekitSessionHandle({ secret: 'secret', store: new RedisStore({ client }) }),
+	checkAuthHandle
+);
+```
+
+</details>
 
 ### Typing your session data
 
