@@ -1,7 +1,7 @@
 {
 	"name": "svelte-kit-sessions",
 	"description": "User-friendly session management module for SvelteKit. Effortlessly integrate efficient session handling into your projects. Session is stored in the store (ex. Redis, Cloudflare KV, etc.), not in a cookie.",
-	"version": "0.2.3",
+	"version": "0.2.4",
 	"author": "yutak23 <yuta.katayama.23+github@gmail.com> (https://github.com/yutak23)",
 	"repository": {
 		"type": "git",
@@ -81,6 +81,9 @@
 	"type": "module",
 	"keywords": [
 		"svelte",
+		"svelte-session",
+		"svelte-session-management",
+		"svelte-session-manager",
 		"sveltekit",
 		"sveltekit-session",
 		"sveltekit-session-management",
