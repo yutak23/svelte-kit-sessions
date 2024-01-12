@@ -95,7 +95,7 @@ describe('Session', () => {
 				expect(mockEvent.cookies.set).toBeCalledTimes(1);
 				expect(mockEvent.cookies.set).toBeCalledWith('exits-session', signedSid, cookie);
 				expect(mockStore.touch).toBeCalledTimes(1);
-				expect(mockStore.touch).toBeCalledWith(sid, cookie.maxAge);
+				expect(mockStore.touch).toBeCalledWith(sid, cookie.maxAge * 1000);
 			});
 
 			it('if maxAge is absent, the rolling option is ignored even if the rolling option is set', async () => {
@@ -322,7 +322,7 @@ describe('Session', () => {
 				expect(mockEvent.cookies.set).toBeCalledTimes(1);
 				expect(mockEvent.cookies.set).toBeCalledWith('exits-session', signedSid, cookie);
 				expect(mockStore.touch).toBeCalledTimes(1);
-				expect(mockStore.touch).toBeCalledWith(sid, cookie.maxAge);
+				expect(mockStore.touch).toBeCalledWith(sid, cookie.maxAge * 1000); // millisecond
 			});
 		});
 	});

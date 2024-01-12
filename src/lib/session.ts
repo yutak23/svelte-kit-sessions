@@ -93,7 +93,7 @@ export default class Session {
 
 				// update cookie maxAge and touch store ttl
 				if (session.#cookie.maxAge && rolling) {
-					await store.touch(session.#id, session.#cookie.maxAge);
+					await store.touch(session.#id, session.#cookie.maxAge * 1000);
 					cookies.set(session.#cookieName, await sign(session.#id, secret), session.#cookie);
 				}
 
