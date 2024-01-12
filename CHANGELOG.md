@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.3.0] - 2024-01-10
+## [0.3.0] - 2024-01-12
 
 - update README
 - fix cookie.maxAge in store.touch to milliseconds
