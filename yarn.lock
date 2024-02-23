@@ -666,10 +666,10 @@
     esbuild "^0.19.11"
     worktop "0.8.0-next.18"
 
-"@sveltejs/adapter-netlify@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@sveltejs/adapter-netlify/-/adapter-netlify-3.0.2.tgz#1d62f8145a72fe87d60cdd77c8df60654d7ac298"
-  integrity sha512-a2FHlWz4gREg0/IUVhS2dJOmjACdp/ZZwSsZZ3d0oQAtTZa8ZVugjMU1z03mDh2NBJwWvDu9rB/hbHy7Q9BFDg==
+"@sveltejs/adapter-netlify@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@sveltejs/adapter-netlify/-/adapter-netlify-4.1.0.tgz#46d899347357bdae0cd1576e0fbfe8979ba0568d"
+  integrity sha512-TGv14O/9xumJv/q9G57ZCzl+LUWHZ9dDleugT5QQD87zJE3Y98AKyU5Z7c7WlBTjKYKEQEeOxjnSdOpMRuhd6g==
   dependencies:
     "@iarna/toml" "^2.2.5"
     esbuild "^0.19.11"
