@@ -217,6 +217,9 @@ export default class Session {
 	 */
 	async destroy(): Promise<void> {
 		await this.#sessionOptions.store.destroy(this.#id);
-		this.#event.cookies.delete(this.#cookieName, { path: this.#cookie.path });
+		// Specify the cookie option set in the sveltekitSessionHandle options.
+		// 	However, maxAge is set to 0 on the SvelteKit side.
+		// cf. https://github.com/sveltejs/kit/blob/%40sveltejs/package%402.3.1/packages/kit/src/runtime/server/cookie.js#L126
+		this.#event.cookies.delete(this.#cookieName, { ...this.#cookie });
 	}
 }

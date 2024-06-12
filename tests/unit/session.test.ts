@@ -405,7 +405,10 @@ describe('Session', () => {
 			expect(mockStore.destroy).toBeCalledTimes(1);
 			expect(mockStore.destroy).toBeCalledWith(session.id);
 			expect(mockEvent.cookies.delete).toBeCalledTimes(1);
-			expect(mockEvent.cookies.delete).toBeCalledWith(session.cookieName, { path: '/' });
+			expect(mockEvent.cookies.delete).toBeCalledWith(session.cookieName, {
+				path: '/',
+				maxAge: 600
+			});
 		});
 	});
 
@@ -423,7 +426,10 @@ describe('Session', () => {
 			expect(mockStore.destroy).toBeCalledTimes(1);
 			expect(mockStore.destroy).toBeCalledWith(session.id);
 			expect(mockEvent.cookies.delete).toBeCalledTimes(1);
-			expect(mockEvent.cookies.delete).toBeCalledWith(session.cookieName, { path: '/' });
+			expect(mockEvent.cookies.delete).toBeCalledWith(session.cookieName, {
+				path: '/',
+				maxAge: 600
+			});
 		});
 	});
 
