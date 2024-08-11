@@ -65,7 +65,7 @@
 		"eslint-plugin-svelte": "^2.35.1",
 		"lodash": "^4.17.21",
 		"luxon": "^3.4.4",
-		"npm-check-updates": "^16.14.15",
+		"npm-check-updates": "^17.0.6",
 		"prettier": "^3.2.5",
 		"prettier-plugin-svelte": "^3.2.2",
 		"publint": "^0.2.7",
