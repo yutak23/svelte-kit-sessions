@@ -51,6 +51,17 @@ const di = (): Handle => {
 		});
 	}
 
+	if(import.meta.configPattern === 'expires') {
+		const date = new Date();
+		date.setDate(date.getDate() + 7);
+		return sveltekitSessionHandle({
+			secret: 'my-secret',
+			cookie: {
+				expires: date, // 1 week
+			}
+		})
+	}
+
 	return sveltekitSessionHandle({
 		secret: 'my-secret'
 	});
