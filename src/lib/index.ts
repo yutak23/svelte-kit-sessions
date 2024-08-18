@@ -155,6 +155,7 @@ const memoryStore = new MemoryStore();
 
 const sveltekitSessionHandle =
 	(options: SveltekitSessionConfig): Handle =>
+	// eslint-disable-next-line @typescript-eslint/unbound-method
 	async ({ event, resolve }) => {
 		const { locals } = event;
 		locals.session = await Session.initialize(
