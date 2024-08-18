@@ -1,4 +1,3 @@
-import type { SessionData } from '$lib/index.js';
 import { expect, test, type APIResponse } from '@playwright/test';
 import { parse, serialize } from 'cookie';
 
