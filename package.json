@@ -51,7 +51,7 @@
 		"@types/cookie": "^0.6.0",
 		"@types/lodash": "^4.17.7",
 		"@types/luxon": "^3.4.2",
-		"@types/node": "^20.15.0",
+		"@types/node": "^20.16.0",
 		"@types/uid-safe": "^2.1.5",
 		"@typescript-eslint/eslint-plugin": "^7.18.0",
 		"@typescript-eslint/parser": "^7.18.0",
