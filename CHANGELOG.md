@@ -32,7 +32,7 @@ All notable changes to this project will be documented in this file.
 
 - First release
 
-[0.3.2]: https://github.com/yutak23/svelte-kit-sessions/compare/v0.3.2...v0.4.0
+[0.4.0]: https://github.com/yutak23/svelte-kit-sessions/compare/v0.3.2...v0.4.0
 [0.3.2]: https://github.com/yutak23/svelte-kit-sessions/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/yutak23/svelte-kit-sessions/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/yutak23/svelte-kit-sessions/compare/v0.2.0...v0.3.0
