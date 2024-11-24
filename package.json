@@ -33,25 +33,25 @@
 	],
 	"peerDependencies": {
 		"@sveltejs/kit": "^1.0.0 || ^2.0.0",
-		"svelte": "^5.2.2"
+		"svelte": "^5.2.7"
 	},
 	"dependencies": {
 		"@isaacs/ttlcache": "^1.4.1"
 	},
 	"devDependencies": {
-		"@playwright/test": "^1.48.2",
+		"@playwright/test": "^1.49.0",
 		"@sveltejs/adapter-auto": "^3.3.1",
 		"@sveltejs/adapter-cloudflare": "^4.7.4",
 		"@sveltejs/adapter-netlify": "^4.3.6",
 		"@sveltejs/adapter-node": "^5.2.9",
-		"@sveltejs/adapter-vercel": "^5.4.7",
-		"@sveltejs/kit": "^2.8.1",
+		"@sveltejs/adapter-vercel": "^5.4.8",
+		"@sveltejs/kit": "^2.8.2",
 		"@sveltejs/package": "^2.3.7",
 		"@sveltejs/vite-plugin-svelte": "^4.0.1",
 		"@types/cookie": "^0.6.0",
 		"@types/lodash": "^4.17.13",
 		"@types/luxon": "^3.4.2",
-		"@types/node": "^20.17.6",
+		"@types/node": "^20.17.7",
 		"@types/uid-safe": "^2.1.5",
 		"@typescript-eslint/eslint-plugin": "^7.18.0",
 		"@typescript-eslint/parser": "^7.18.0",
@@ -67,12 +67,12 @@
 		"luxon": "^3.5.0",
 		"npm-check-updates": "^17.1.11",
 		"prettier": "^3.3.3",
-		"prettier-plugin-svelte": "^3.2.8",
+		"prettier-plugin-svelte": "^3.3.2",
 		"publint": "^0.2.12",
-		"svelte": "^5.2.2",
-		"svelte-check": "^4.0.9",
+		"svelte": "^5.2.7",
+		"svelte-check": "^4.1.0",
 		"tslib": "^2.8.1",
-		"typescript": "^5.6.3",
+		"typescript": "^5.7.2",
 		"vite": "^5.4.11",
 		"vitest": "^2.1.5",
 		"wrangler": "^3.72.0"
