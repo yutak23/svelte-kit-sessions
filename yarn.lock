@@ -888,10 +888,10 @@
     esbuild "^0.24.0"
     worktop "0.8.0-next.18"
 
-"@sveltejs/adapter-netlify@^4.4.0":
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/@sveltejs/adapter-netlify/-/adapter-netlify-4.4.0.tgz#9d9be23fb7ccee75a77e58477d46051feca30e71"
-  integrity sha512-2rgfMs6aFSmwyMLiqB5mmFga1n9bD3SKO7skp8fh40bikJCrkRXRmQj5ivE6Gmm0Y4A7Ny0p6SaJNGqvGN37uA==
+"@sveltejs/adapter-netlify@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@sveltejs/adapter-netlify/-/adapter-netlify-5.0.0.tgz#d36805cead21b6c7546b7588f2f191cb67072af4"
+  integrity sha512-if2JvVHuQWRG9V2A3P8CrbB+qo0qLFvpIu2Nb/sbMqoejDL+4kuzT4WPA7dUgruAF0Hj/AAGpxaJedgNd6ZENw==
   dependencies:
     "@iarna/toml" "^2.2.5"
     esbuild "^0.24.0"
