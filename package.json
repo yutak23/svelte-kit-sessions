@@ -40,7 +40,7 @@
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.49.1",
-		"@sveltejs/adapter-auto": "^3.3.1",
+		"@sveltejs/adapter-auto": "^6.0.1",
 		"@sveltejs/adapter-cloudflare": "^5.0.0",
 		"@sveltejs/adapter-netlify": "^4.4.0",
 		"@sveltejs/adapter-node": "^5.2.11",
@@ -65,7 +65,7 @@
 		"eslint-plugin-svelte": "^2.46.1",
 		"lodash": "^4.17.21",
 		"luxon": "^3.5.0",
-		"npm-check-updates": "^17.1.13",
+		"npm-check-updates": "^18.0.1",
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.2",
 		"publint": "^0.2.12",
