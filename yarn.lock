@@ -82,10 +82,10 @@
   resolved "https://registry.yarnpkg.com/@cloudflare/workerd-windows-64/-/workerd-windows-64-1.20250408.0.tgz#4a7a6ab7d39bb45f4078f39a2186f13eddaead41"
   integrity sha512-nJ3RjMKGae2aF2rZ/CNeBvQPM+W5V1SUK0FYWG/uomyr7uQ2l4IayHna1ODg/OHHTEgIjwom0Mbn58iXb0WOcQ==
 
-"@cloudflare/workers-types@^4.20241106.0":
-  version "4.20241224.0"
-  resolved "https://registry.yarnpkg.com/@cloudflare/workers-types/-/workers-types-4.20241224.0.tgz#5b6951a2b06658ed247e25ef6e67fa27bf7727b5"
-  integrity sha512-1ZmFc8qqM7S/HUGmLplc4P8n8DoMqiJmc47r9Lr7VbuaotoqCXVljz09w1V1mc4K3pbFPgvqSy4XYStZ08HrlQ==
+"@cloudflare/workers-types@^4.20250312.0":
+  version "4.20250718.0"
+  resolved "https://registry.yarnpkg.com/@cloudflare/workers-types/-/workers-types-4.20250718.0.tgz#aaa8c6a37c1da4caf13b60c07784da8de874e766"
+  integrity sha512-RpYLgb81veUGtlLQINwGldsXQDcaK2/Z6QGeSq88yyd9o4tZYw7dzMu34sHgoCeb0QiPQWtetXiPf99PrIj+YQ==
 
 "@cspotcode/source-map-support@0.8.1":
   version "0.8.1"
@@ -1102,12 +1102,12 @@
   resolved "https://registry.yarnpkg.com/@sveltejs/adapter-auto/-/adapter-auto-6.0.1.tgz#29973229e53fcc3d102a51704ea66a420ccd2e65"
   integrity sha512-mcWud3pYGPWM2Pphdj8G9Qiq24nZ8L4LB7coCUckUEy5Y7wOWGJ/enaZ4AtJTcSm5dNK1rIkBRoqt+ae4zlxcQ==
 
-"@sveltejs/adapter-cloudflare@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@sveltejs/adapter-cloudflare/-/adapter-cloudflare-5.0.0.tgz#a06038f716353deb1e346f1a0a6b978c2d08e6d1"
-  integrity sha512-YYfkdEajp4sALHFYeIUUQTGC3M1ZicrYYSVz1zmYwR2DKT59dwygYsdufI4L6ONNsDdRh3xeojjo8sO3V9dHcw==
+"@sveltejs/adapter-cloudflare@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@sveltejs/adapter-cloudflare/-/adapter-cloudflare-6.0.1.tgz#0c7c1c40bc936283ecf1b5583b7bbf59995c0b17"
+  integrity sha512-peHS0P9UKwqA7LODR6nKUumq3vJym8aJebY/LUSzmcf963j4cIS9G0CHmeazOt1CenjjuejO7AufxzRKPyb1iQ==
   dependencies:
-    "@cloudflare/workers-types" "^4.20241106.0"
+    "@cloudflare/workers-types" "^4.20250312.0"
     esbuild "^0.24.0"
     worktop "0.8.0-next.18"
 
