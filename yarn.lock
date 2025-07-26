@@ -82,10 +82,10 @@
   resolved "https://registry.yarnpkg.com/@cloudflare/workerd-windows-64/-/workerd-windows-64-1.20250408.0.tgz#4a7a6ab7d39bb45f4078f39a2186f13eddaead41"
   integrity sha512-nJ3RjMKGae2aF2rZ/CNeBvQPM+W5V1SUK0FYWG/uomyr7uQ2l4IayHna1ODg/OHHTEgIjwom0Mbn58iXb0WOcQ==
 
-"@cloudflare/workers-types@^4.20250312.0":
-  version "4.20250718.0"
-  resolved "https://registry.yarnpkg.com/@cloudflare/workers-types/-/workers-types-4.20250718.0.tgz#aaa8c6a37c1da4caf13b60c07784da8de874e766"
-  integrity sha512-RpYLgb81veUGtlLQINwGldsXQDcaK2/Z6QGeSq88yyd9o4tZYw7dzMu34sHgoCeb0QiPQWtetXiPf99PrIj+YQ==
+"@cloudflare/workers-types@^4.20250507.0":
+  version "4.20250726.0"
+  resolved "https://registry.yarnpkg.com/@cloudflare/workers-types/-/workers-types-4.20250726.0.tgz#2bcd78bc5e26aa222d4a8f8cf9edb8f5f3427bb3"
+  integrity sha512-NtM1yVBKJFX4LgSoZkVU0EDhWWvSb1vt6REO+uMYZRgx1HAfQz9GDN6bBB0B+fm2ZIxzt6FzlDbmrXpGJ2M/4Q==
 
 "@cspotcode/source-map-support@0.8.1":
   version "0.8.1"
@@ -1232,13 +1232,12 @@
   resolved "https://registry.yarnpkg.com/@sveltejs/adapter-auto/-/adapter-auto-6.0.1.tgz#29973229e53fcc3d102a51704ea66a420ccd2e65"
   integrity sha512-mcWud3pYGPWM2Pphdj8G9Qiq24nZ8L4LB7coCUckUEy5Y7wOWGJ/enaZ4AtJTcSm5dNK1rIkBRoqt+ae4zlxcQ==
 
-"@sveltejs/adapter-cloudflare@^6.0.1":
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/@sveltejs/adapter-cloudflare/-/adapter-cloudflare-6.0.1.tgz#0c7c1c40bc936283ecf1b5583b7bbf59995c0b17"
-  integrity sha512-peHS0P9UKwqA7LODR6nKUumq3vJym8aJebY/LUSzmcf963j4cIS9G0CHmeazOt1CenjjuejO7AufxzRKPyb1iQ==
+"@sveltejs/adapter-cloudflare@^7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@sveltejs/adapter-cloudflare/-/adapter-cloudflare-7.1.1.tgz#a75871acd7c3a6261bee571455089051bcc4ea7c"
+  integrity sha512-AtRyb1NNfh0WIRg5evoL7dhxiAY+7AD79j2e+zEqHsTwYsjZ+ghsf3Sj39oVSZztxOyaDJT8HxFNPlEJULlacw==
   dependencies:
-    "@cloudflare/workers-types" "^4.20250312.0"
-    esbuild "^0.24.0"
+    "@cloudflare/workers-types" "^4.20250507.0"
     worktop "0.8.0-next.18"
 
 "@sveltejs/adapter-netlify@^5.1.0":
