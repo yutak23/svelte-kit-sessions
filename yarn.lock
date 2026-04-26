@@ -3653,10 +3653,10 @@ npm-bundled@^2.0.0:
   dependencies:
     npm-normalize-package-bin "^2.0.0"
 
-npm-check-updates@^18.0.1:
-  version "18.0.1"
-  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-18.0.1.tgz#72b4dd6bf12749e3634ba96855bc1ed3d153fe98"
-  integrity sha512-MO7mLp/8nm6kZNLLyPgz4gHmr9tLoU+pWPLdXuGAx+oZydBHkHWN0ibTonsrfwC2WEQNIQxuZagYwB67JQpAuw==
+npm-check-updates@^22.0.1:
+  version "22.0.1"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-22.0.1.tgz#c4d55d0e8508e494fdbc643b9c82fefb47daac2b"
+  integrity sha512-K8PDu7l9v7UKIwDSxLnqA9LHT76Mu4eCjGjp0JwSeSsyKWmX/YZY+AoBxw4oVdKwQLthWbzg1g+OKysHYGQCjQ==
 
 npm-normalize-package-bin@^2.0.0:
   version "2.0.0"
