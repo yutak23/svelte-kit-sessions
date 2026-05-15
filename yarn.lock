@@ -1365,7 +1365,7 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.7.tgz#4158d3105276773d5b7695cd4834b1722e4f37a8"
   integrity sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==
 
-"@types/estree@1.0.8", "@types/estree@^1.0.5", "@types/estree@^1.0.6":
+"@types/estree@1.0.8":
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.8.tgz#958b91c991b1867ced318bedea0e215ee050726e"
   integrity sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==
@@ -1374,6 +1374,11 @@
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.6.tgz#628effeeae2064a1b4e79f78e81d87b7e5fc7b50"
   integrity sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==
+
+"@types/estree@^1.0.5", "@types/estree@^1.0.6":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.9.tgz#cf3f0e876d7bee15a93ab925b82bf570a3904a24"
+  integrity sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==
 
 "@types/json5@^0.0.29":
   version "0.0.29"
@@ -2124,10 +2129,10 @@ devalue@^5.1.0:
   resolved "https://registry.yarnpkg.com/devalue/-/devalue-5.1.1.tgz#a71887ac0f354652851752654e4bd435a53891ae"
   integrity sha512-maua5KUiapvEwiEAe+XnlZ3Rh0GD+qI1J/nb9vrJc3muPXvcF/8gXYTWF76+5DAqHyDUtOIImEuo0YKE9mshVw==
 
-devalue@^5.6.3:
-  version "5.6.3"
-  resolved "https://registry.yarnpkg.com/devalue/-/devalue-5.6.3.tgz#fee7b50bf072f4a4cdf18d1f27de3ce92131f699"
-  integrity sha512-nc7XjUU/2Lb+SvEFVGcWLiKkzfw8+qHI7zn8WYXKkLMgfGSHbgCEaR6bJpev8Cm6Rmrb19Gfd/tZvGqx9is3wg==
+devalue@^5.8.1:
+  version "5.8.1"
+  resolved "https://registry.yarnpkg.com/devalue/-/devalue-5.8.1.tgz#f27290d3a324e2eb20c2714369b01b8ec4de4c61"
+  integrity sha512-4CXDYRBGqN+57wVJkuXBYmpAVUSg3L6JAQa/DFqm238G73E1wuyc/JhGQJzN7vUf/CMphYau2zXbfWzDR5aTEw==
 
 dir-glob@^3.0.1:
   version "3.0.1"
@@ -2612,10 +2617,10 @@ esquery@^1.4.2:
   dependencies:
     estraverse "^5.1.0"
 
-esrap@^2.2.2:
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/esrap/-/esrap-2.2.3.tgz#cbc5a6aad5349697b78ef7af62704e733a50d2c1"
-  integrity sha512-8fOS+GIGCQZl/ZIlhl59htOlms6U8NvX6ZYgYHpRU/b6tVSh3uHkOHZikl3D4cMbYM0JlpBe+p/BkZEi8J9XIQ==
+esrap@^2.2.4:
+  version "2.2.8"
+  resolved "https://registry.yarnpkg.com/esrap/-/esrap-2.2.8.tgz#bdde89ef7aac4c5b934cf9b508403291267d351b"
+  integrity sha512-MPweq2EvEGj8jwOI7Hgycw/QIHzqA1EbAM8lG7p+FBfZbZq/hQ6h3AMsqnu/djzisH1KVWNzbb7LSgIVtMlPSg==
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.4.15"
 
@@ -4552,9 +4557,9 @@ svelte2tsx@~0.7.16:
     pascal-case "^3.1.1"
 
 svelte@^5.16.0:
-  version "5.53.6"
-  resolved "https://registry.yarnpkg.com/svelte/-/svelte-5.53.6.tgz#9ebfdd9faeb7b35d425735c63023544e487959c5"
-  integrity sha512-lP5DGF3oDDI9fhHcSpaBiJEkFLuS16h92DhM1L5K1lFm0WjOmUh1i2sNkBBk8rkxJRpob0dBE75jRfUzGZUOGA==
+  version "5.55.7"
+  resolved "https://registry.yarnpkg.com/svelte/-/svelte-5.55.7.tgz#04d19e5d4e8e5b6afd7e648c30ab434bb20bfc86"
+  integrity sha512-ymI5ykLPwIHW839E053FQbI1G+jnRFJEw3Kv5Y4njixVWywQBx+NUFpkkKyk5LIb36Fg9DVXSYpqiGekLD0hyw==
   dependencies:
     "@jridgewell/remapping" "^2.3.4"
     "@jridgewell/sourcemap-codec" "^1.5.0"
@@ -4565,9 +4570,9 @@ svelte@^5.16.0:
     aria-query "5.3.1"
     axobject-query "^4.1.0"
     clsx "^2.1.1"
-    devalue "^5.6.3"
+    devalue "^5.8.1"
     esm-env "^1.2.1"
-    esrap "^2.2.2"
+    esrap "^2.2.4"
     is-reference "^3.0.3"
     locate-character "^3.0.0"
     magic-string "^0.30.11"
