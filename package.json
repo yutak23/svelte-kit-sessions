@@ -36,7 +36,7 @@
 		"svelte": "^5.16.0"
 	},
 	"dependencies": {
-		"@isaacs/ttlcache": "^1.4.1"
+		"@isaacs/ttlcache": "^2.1.4"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.49.1",
