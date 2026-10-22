@@ -82,10 +82,10 @@
   resolved "https://registry.yarnpkg.com/@cloudflare/workerd-windows-64/-/workerd-windows-64-1.20250718.0.tgz#93abadbd1c036088f8e87d911bdd8b598def28ab"
   integrity sha512-dY16RXKffmugnc67LTbyjdDHZn5NoTF1yHEf2fN4+OaOnoGSp3N1x77QubTDwqZ9zECWxgQfDLjddcH8dWeFhg==
 
-"@cloudflare/workers-types@^4.20250507.0":
-  version "4.20250726.0"
-  resolved "https://registry.yarnpkg.com/@cloudflare/workers-types/-/workers-types-4.20250726.0.tgz#2bcd78bc5e26aa222d4a8f8cf9edb8f5f3427bb3"
-  integrity sha512-NtM1yVBKJFX4LgSoZkVU0EDhWWvSb1vt6REO+uMYZRgx1HAfQz9GDN6bBB0B+fm2ZIxzt6FzlDbmrXpGJ2M/4Q==
+"@cloudflare/workers-types@^5.20260925.1":
+  version "5.20261022.1"
+  resolved "https://registry.yarnpkg.com/@cloudflare/workers-types/-/workers-types-5.20261022.1.tgz#566317d658b9bd95e172f98d2ae445a8aefc2d0d"
+  integrity sha512-irp6lxKgWTnIquva6iSaJhV9vCdGlhLIw3+vVOj1Glge38LnKb3jMQiB53gaUB+EgN47JVVg58kJ703V/00JYw==
 
 "@cspotcode/source-map-support@0.8.1":
   version "0.8.1"
@@ -913,6 +913,11 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.28.tgz#d45e01c4a56f143ee69c54dd6b12eade9e270a73"
   integrity sha512-8LduaNlMZGwdZ6qWrKlfa+2M4gahzFkprZiAt2TF8uS0qQgBizKXpXURqvTJ4WtmupWxaLqjRb2UCTe72mu+Aw==
 
+"@rolldown/pluginutils@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@rolldown/pluginutils/-/pluginutils-1.0.1.tgz#e3fcee093fbb5ce765e1ad088ff4de2889f6f9be"
+  integrity sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==
+
 "@rollup/plugin-commonjs@^28.0.1":
   version "28.0.1"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-commonjs/-/plugin-commonjs-28.0.1.tgz#e2138e31cc0637676dc3d5cae7739131f7cd565e"
@@ -1267,13 +1272,13 @@
   resolved "https://registry.yarnpkg.com/@sveltejs/adapter-auto/-/adapter-auto-6.0.1.tgz#29973229e53fcc3d102a51704ea66a420ccd2e65"
   integrity sha512-mcWud3pYGPWM2Pphdj8G9Qiq24nZ8L4LB7coCUckUEy5Y7wOWGJ/enaZ4AtJTcSm5dNK1rIkBRoqt+ae4zlxcQ==
 
-"@sveltejs/adapter-cloudflare@^7.1.1":
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/@sveltejs/adapter-cloudflare/-/adapter-cloudflare-7.1.1.tgz#a75871acd7c3a6261bee571455089051bcc4ea7c"
-  integrity sha512-AtRyb1NNfh0WIRg5evoL7dhxiAY+7AD79j2e+zEqHsTwYsjZ+ghsf3Sj39oVSZztxOyaDJT8HxFNPlEJULlacw==
+"@sveltejs/adapter-cloudflare@^8.0.1":
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/@sveltejs/adapter-cloudflare/-/adapter-cloudflare-8.0.1.tgz#07672ee8aaedc74233aa455cb22df69b1ad68930"
+  integrity sha512-KISMvrFOLpn7sm7wQr26XhkVIBYQLq1wYcFZvNgHqWxyN/kVZb/ldu7+jJtWi+Ai0mNw+OPRecHadzEB5TGQ6A==
   dependencies:
-    "@cloudflare/workers-types" "^4.20250507.0"
-    worktop "0.8.0-next.18"
+    "@cloudflare/workers-types" "^5.20260925.1"
+    "@rolldown/pluginutils" "^1.0.1"
 
 "@sveltejs/adapter-netlify@^5.1.0":
   version "5.1.0"
@@ -4001,11 +4006,6 @@ regexp.prototype.flags@^1.5.2:
     es-errors "^1.3.0"
     set-function-name "^2.0.1"
 
-regexparam@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/regexparam/-/regexparam-3.0.0.tgz#1673e09d41cb7fd41eaafd4040a6aa90daa0a21a"
-  integrity sha512-RSYAtP31mvYLkAHrOlh25pCNQ5hWnT106VukGaaFfuJrZFkGRX5GhUAdPqpSDXxOhA2c4akmRuplv1mRqnBn6Q==
-
 resolve-from@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/resolve-from/-/resolve-from-4.0.0.tgz#4abcd852ad32dd7baabfe9b40e00a36db5f392e6"
@@ -4970,14 +4970,6 @@ workerd@1.20250718.0:
     "@cloudflare/workerd-linux-64" "1.20250718.0"
     "@cloudflare/workerd-linux-arm64" "1.20250718.0"
     "@cloudflare/workerd-windows-64" "1.20250718.0"
-
-worktop@0.8.0-next.18:
-  version "0.8.0-next.18"
-  resolved "https://registry.yarnpkg.com/worktop/-/worktop-0.8.0-next.18.tgz#546b1ece7b34d01708ac2abec7c1110cd8874bfd"
-  integrity sha512-+TvsA6VAVoMC3XDKR5MoC/qlLqDixEfOBysDEKnPIPou/NvoPWCAuXHXMsswwlvmEuvX56lQjvELLyLuzTKvRw==
-  dependencies:
-    mrmime "^2.0.0"
-    regexparam "^3.0.0"
 
 wrangler@^3.72.0:
   version "3.114.17"
