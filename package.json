@@ -32,7 +32,7 @@
 		"dist"
 	],
 	"peerDependencies": {
-		"@sveltejs/kit": "^1.0.0 || ^2.0.0",
+		"@sveltejs/kit": "^1.0.0 || ^2.0.0 || ^3.0.0",
 		"svelte": "^5.16.0"
 	},
 	"dependencies": {
@@ -45,7 +45,7 @@
 		"@sveltejs/adapter-netlify": "^5.1.0",
 		"@sveltejs/adapter-node": "^5.2.11",
 		"@sveltejs/adapter-vercel": "^5.5.2",
-		"@sveltejs/kit": "^2.15.1",
+		"@sveltejs/kit": "^3.0.0",
 		"@sveltejs/package": "^2.3.7",
 		"@sveltejs/vite-plugin-svelte": "^5.1.1",
 		"@types/cookie": "^0.6.0",
