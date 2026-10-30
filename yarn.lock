@@ -1320,16 +1320,19 @@
     sirv "^3.0.0"
     tiny-glob "^0.2.9"
 
-"@sveltejs/package@^2.3.7":
-  version "2.3.7"
-  resolved "https://registry.yarnpkg.com/@sveltejs/package/-/package-2.3.7.tgz#7b867f70763ad42ebb4803b4fe046d6898911168"
-  integrity sha512-LYgUkde5GUYqOpXbcoCGUpEH4Ctl3Wj4u4CVZBl56dEeLW5fGHE037ZL1qlK0Ky+QD5uUfwONSeGwIOIighFMQ==
+"@sveltejs/load-config@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@sveltejs/load-config/-/load-config-0.2.3.tgz#5f54c7153d287a1b5f2e0a69fb7f10e91ba95d81"
+  integrity sha512-VT3qmUb8pRV2QrZjd8iAmtg8lf4W0TIjZbvXtz5MKei/q96teWZgGJyyidJzOjzZzvdq616eSRVeMYIQChUTAQ==
+
+"@sveltejs/package@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@sveltejs/package/-/package-3.0.2.tgz#8a38a9f0fb840ac58da46aabbd990057ad48c964"
+  integrity sha512-1HhN/Lgw1Bqyu7T6fWILt6euTyt+h+yBH2yUVYxTkGVUdIV1Xsp/gGaHnfBkD584i1fXte1cR4+zYtUsQC/F6A==
   dependencies:
-    chokidar "^4.0.0"
-    kleur "^4.1.5"
-    sade "^1.8.1"
-    semver "^7.5.4"
-    svelte2tsx "~0.7.16"
+    "@sveltejs/load-config" "^0.2.3"
+    chokidar "^6.0.0"
+    svelte2tsx "~0.7.60"
 
 "@sveltejs/vite-plugin-svelte-inspector@^4.0.1":
   version "4.0.1"
@@ -1894,19 +1897,19 @@ check-error@^2.1.1:
   resolved "https://registry.yarnpkg.com/check-error/-/check-error-2.1.1.tgz#87eb876ae71ee388fa0471fe423f494be1d96ccc"
   integrity sha512-OAlb+T7V4Op9OwdkjmguYRqncdlx5JiofwOAUkmTF+jNdHwzTaTs4sRAGpzLF3oOz5xAyDGrPgeIDFQmDOTiJw==
 
-chokidar@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-4.0.0.tgz#4d603963e5dd762dc5c7bb1cb5664e53a3002225"
-  integrity sha512-mxIojEAQcuEvT/lyXq+jf/3cO/KoA6z4CeNDGGevTybECPOMFCnQy3OPahluUkbqgPNGw5Bi78UC7Po6Lhy+NA==
-  dependencies:
-    readdirp "^4.0.1"
-
 chokidar@^4.0.1:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-4.0.3.tgz#7be37a4c03c9aee1ecfe862a4a23b2c70c205d30"
   integrity sha512-Qgzu8kfBvo+cA4962jnP1KkS6Dop5NS6g7R5LFYJr4b8Ub94PPQXUksCw9PvXoeXPRRddRNC5C1JQUR2SMGtnA==
   dependencies:
     readdirp "^4.0.1"
+
+chokidar@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-6.0.0.tgz#66bb84678ab40b8d25679d71f3955bd206ab618b"
+  integrity sha512-Ec2Z7wpcKBiMpR7DxteoqS/sq5G5d2A4fpxzPv6+fD7xNNdrTghn7L11YwV5EN1B3i72Erc3XVT5FkWIDx90+A==
+  dependencies:
+    readdirp "^5.1.1"
 
 chownr@^3.0.0:
   version "3.0.0"
@@ -3420,13 +3423,6 @@ loupe@^3.1.0, loupe@^3.1.2:
   resolved "https://registry.yarnpkg.com/loupe/-/loupe-3.1.3.tgz#042a8f7986d77f3d0f98ef7990a2b2fef18b0fd2"
   integrity sha512-kkIp7XSkP78ZxJEsSxW3712C6teJVoeHHwgo9zJ380de7IYyJ2ISlxojcH2pC5OFLewESmnRi/+XCDIEEVyoug==
 
-lower-case@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/lower-case/-/lower-case-2.0.2.tgz#6fa237c63dbdc4a82ca0fd882e4722dc5e634e28"
-  integrity sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg==
-  dependencies:
-    tslib "^2.0.3"
-
 lru-cache@^10.2.0:
   version "10.4.3"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-10.4.3.tgz#410fc8a17b70e598013df257c2446b7f3383f119"
@@ -3619,14 +3615,6 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
-no-case@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/no-case/-/no-case-3.0.4.tgz#d361fd5c9800f558551a8369fc0dcd4662b6124d"
-  integrity sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg==
-  dependencies:
-    lower-case "^2.0.2"
-    tslib "^2.0.3"
-
 node-fetch@^2.6.7:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.7.0.tgz#d0f0fa6e3e2dc1d27efcd8ad99d550bda94d187d"
@@ -3779,14 +3767,6 @@ parent-module@^1.0.0:
   integrity sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==
   dependencies:
     callsites "^3.0.0"
-
-pascal-case@^3.1.1:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/pascal-case/-/pascal-case-3.1.2.tgz#b48e0ef2b98e205e7c1dae747d0b1508237660eb"
-  integrity sha512-uWlGT3YSnK9x3BQJaOdcZwrnV6hPpd8jFH1/ucpiLRPh/2zCVJKS19E4GvYHvaCcACn3foXZ0cLB9Wrx1KGe5g==
-  dependencies:
-    no-case "^3.0.4"
-    tslib "^2.0.3"
 
 path-exists@^4.0.0:
   version "4.0.0"
@@ -3981,6 +3961,11 @@ readdirp@^4.0.1:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/readdirp/-/readdirp-4.1.2.tgz#eb85801435fbf2a7ee58f19e0921b068fc69948d"
   integrity sha512-GDhwkLfywWL2s6vEjyhri+eXmfH6j1L7JE27WhqLeYzoh/A3DBaYGEj2H/HFZCn/kMfim73FXxEJTw06WtxQwg==
+
+readdirp@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/readdirp/-/readdirp-5.1.1.tgz#520bca06f9d1ae1b96cc0800dbe84b983d19422c"
+  integrity sha512-Kko+Y5XQ6fM+Ce3dq3m9YGxnacYZYl9cA1wZjaF3Vbry2L3i1qVg8+CAgNPsXRArPMUMCaOR7oa9Nqntc43JKA==
 
 regexp.prototype.flags@^1.5.1:
   version "1.5.1"
@@ -4203,6 +4188,11 @@ safe-regex-test@^1.0.3:
     call-bind "^1.0.6"
     es-errors "^1.3.0"
     is-regex "^1.1.4"
+
+scule@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/scule/-/scule-1.3.0.tgz#6efbd22fd0bb801bdcc585c89266a7d2daa8fbd3"
+  integrity sha512-6FtHJEvt+pVMIB9IBY+IcCJ6Z5f1iQnytgyfKMhDKgmzYG+TeH/wx1y3l27rshSbLiSanrR9ffZDrEsmjlQF2g==
 
 semver@^6.3.0, semver@^6.3.1:
   version "6.3.1"
@@ -4543,13 +4533,13 @@ svelte-eslint-parser@^0.43.0:
     postcss "^8.4.39"
     postcss-scss "^4.0.9"
 
-svelte2tsx@~0.7.16:
-  version "0.7.19"
-  resolved "https://registry.yarnpkg.com/svelte2tsx/-/svelte2tsx-0.7.19.tgz#135117dce47bcb295d376873532ee2c00222deb5"
-  integrity sha512-PME/9mILn9wOihtk2dxu9tmf2+B9X6oWuqYPJRKSjqU4wq3Pc6+fOuYV7T3H+QF5afmA1oDobfXC6dzmK9NAVw==
+svelte2tsx@~0.7.60:
+  version "0.7.62"
+  resolved "https://registry.yarnpkg.com/svelte2tsx/-/svelte2tsx-0.7.62.tgz#6d6ef27d626b04c7ff7fe7802df0d783575c037a"
+  integrity sha512-ZXfsmL0jzAs01ho0w5z5LSIC2WgSdpTF0QCwaXLq7oHgho4P9fTgHlLp1pKAx6/xtVYRSW5nGH5ZRpEHZCqliA==
   dependencies:
     dedent-js "^1.0.1"
-    pascal-case "^3.1.1"
+    scule "^1.3.0"
 
 svelte@^5.16.0:
   version "5.55.7"
@@ -4671,11 +4661,6 @@ tsconfig-paths@^3.15.0:
     json5 "^1.0.2"
     minimist "^1.2.6"
     strip-bom "^3.0.0"
-
-tslib@^2.0.3:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.2.tgz#703ac29425e7b37cd6fd456e92404d46d1f3e4ae"
-  integrity sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==
 
 tslib@^2.4.0, tslib@^2.8.1:
   version "2.8.1"
