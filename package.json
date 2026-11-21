@@ -75,7 +75,7 @@
 		"typescript": "^5.7.2",
 		"vite": "^6.0.7",
 		"vitest": "^3.0.2",
-		"wrangler": "^3.72.0"
+		"wrangler": "^4.0.0"
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
